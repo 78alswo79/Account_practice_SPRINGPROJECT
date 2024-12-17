@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "C:/workspace/SPRING_PROJECT/myAccount/src/main/resources/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.TestMapper"> <!-- //해당Mapper 인터페이스 지정 -->
+	<select id="getDateYear" resultType="com.example.demo.dto.Test">
+		SELECT
+			 * 
+		FROM 
+			TESTTABLE
+	</select>
+
+	<!-- Map<>안에 두 DTO를 담았다. 바인팅을 할 때, 객체.멤버변수로 접근한다. 공부하기 좋은. -->
+	<select id="getMyAccountList" parameterType="java.util.Map" resultType="com.example.demo.dto.Test"> <!-- parameterType="com.example.demo.dto.Test" -->
+		SELECT
+			SEQ
+			, YEAR
+		 	, MONTH
+			, DAYS
+			, CONTENT
+			, INCOME
+			, SPENDING
+			, BALANCE
+		FROM 
+			TESTTABLE
+		WHERE
+			YEAR = #{test.year}
+		AND
+			MONTH = #{test.month}
+		<choose>
+			<when test="filterOption == '' or filterOption == null "></when>
+			<otherwise>
+				AND
+					CONTENT = #{filterOption}
+			</otherwise>
+		</choose>
+		ORDER BY
+			SEQ
+		LIMIT 
+			#{pageVO.startIndex}, #{pageVO.endIndex}
+	</select>
+	
+	<insert id="insertAccountList">
+		INSERT INTO TESTTABLE (SEQ, YEAR, MONTH, DAYS, CONTENT, INCOME, SPENDING, BALANCE) 
+		VALUES
+		<!-- mybatis forEach문 공부. -->
+		<foreach item="item" collection="getList" separator=",">
+            (#{item.seq}, #{item.year}, #{item.month}, #{item.days}, #{item.content}, #{item.income}, #{item.spending}, #{item.balance})
+        </foreach>
+	</insert>
+	
+	<select id = "getSeq" parameterType = "com.example.demo.dto.Test" resultType = "Integer">
+		SELECT
+			MAX(SEQ)
+		FROM
+			TESTTABLE
+	</select>
+	
+	<select id="getUpdateMyAccountList" resultType="com.example.demo.dto.Test">
+		SELECT
+			 * 
+		FROM 
+			TESTTABLE
+		WHERE
+			YEAR = #{year}
+		AND
+			MONTH = #{month}
+		AND 
+			SEQ	IN
+		<!-- mybatis forEach문 공부. Map<?,?>으로 넣어주면 객체 접근을 사용하지 않아도 된다.-->
+	    <foreach item="item" index="index" collection="getSeqArray" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
+	</select>
+	
+	
+	<select id="testList" parameterType="com.example.demo.dto.Test" resultType="java.util.Map">
+		SELECT
+			 YEAR
+			 , MONTH 
+		FROM 
+			TESTTABLE
+		WHERE
+			YEAR = #{year}
+		AND
+			MONTH = #{month}
+	</select>
+	
+	<delete id="delete">
+		DELETE 
+		FROM
+			TESTTABLE
+		WHERE
+			SEQ IN
+			<foreach collection="seqArr" item="seqArr" open="(" separator="," close=")">
+				#{seqArr}
+			</foreach>
+	</delete>
+	
+	<update id="update">
+		UPDATE 
+			TESTTABLE
+		SET
+			CONTENT = #{content}
+			, INCOME = #{income}
+			, SPENDING = #{spending}
+			, BALANCE = #{balance}
+		WHERE
+			SEQ = #{seq}
+		AND
+			YEAR = #{year}
+		AND
+			MONTH = #{month}
+		AND
+			DAYS = #{days}
+	</update>
+	
+	<select id="getFilterList" resultType="String">
+		SELECT
+			 DISTINCT CONTENT
+		FROM 
+			TESTTABLE
+		WHERE
+			YEAR = #{year}
+		AND
+			MONTH = #{month}
+	</select>
+	
+	<select id="getTotalListCnt" parameterType="com.example.demo.dto.Test" resultType="Integer">
+		SELECT
+			 COUNT(*)
+		FROM 
+			TESTTABLE
+		WHERE
+			YEAR = #{year}
+		AND
+			MONTH = #{month}
+	</select>
+	
+	<select id="getFilteredList" parameterType="java.util.Map" resultType="com.example.demo.dto.Test"> <!-- parameterType="com.example.demo.dto.Test" -->
+		SELECT
+			SEQ
+			, YEAR
+		 	, MONTH
+			, DAYS
+			, CONTENT
+			, INCOME
+			, SPENDING
+			, BALANCE
+		FROM 
+			TESTTABLE
+		WHERE
+			YEAR = #{test.year}
+		AND
+			MONTH = #{test.month}
+		<choose>
+			<when test="filterOption == '' or filterOption == null "></when>
+			<otherwise>
+				AND
+					CONTENT = #{filterOption}
+			</otherwise>
+		</choose>
+		ORDER BY
+			SEQ
+		<!-- LIMIT 
+			#{pageVO.startIndex}, #{pageVO.endIndex} -->
+	</select>
+	
+</mapper>
