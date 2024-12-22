@@ -1,17 +1,23 @@
 package com.example.demo.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.PageVO;
 import com.example.demo.dto.Test;
 import com.example.demo.mapper.TestMapper;
+
 
 @Service
 public class AccountService {
@@ -213,6 +219,43 @@ public class AccountService {
 		list = testMapper.getFilteredList(map);
 		
 		return list;
+	}
+
+	public ByteArrayOutputStream exportToExcel(List<Test> getList) throws IOException {
+		// Workbook 객체 생성
+		Workbook wb = new XSSFWorkbook();
+		Sheet sheet = wb.createSheet("시트이름 테스트");
+		
+		// 헤더 생성
+		Row rowHeader = sheet.createRow(0);
+		for (int i = 0; i < getHeaderNameList.values().length; i++) {
+			rowHeader.createCell(i).setCellValue(getHeaderNameList.values()[i].name());
+		} 
+		
+		// 데이터 추가
+        int rowNum = 1;
+        for (Test test : getList) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(test.getYear());    // 첫 번째 셀
+            row.createCell(1).setCellValue(test.getMonth());   // 두 번째 셀
+            row.createCell(2).setCellValue(test.getDays());    // 세 번째 셀
+            row.createCell(3).setCellValue(test.getContent());  // 네 번째 셀
+            row.createCell(4).setCellValue(test.getIncome());   // 다섯 번째 셀
+            row.createCell(5).setCellValue(test.getSpending()); // 여섯 번째 셀
+            row.createCell(6).setCellValue(test.getBalance());   // 일곱 번째 셀
+        }
+        
+        // 엑셀 파일을 ByteArrayOutputStream에 작성
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        wb.write(outputStream); // workbook 객체를 사용
+        wb.close(); // 리소스 해제
+
+        return outputStream;
+	}
+	
+	// 상수 Enum활용.
+	private enum getHeaderNameList {
+		YEAR, MONTH, DAYS, CONTENT, INCOME, SPENDING, BALANCE
 	}
 	
 }

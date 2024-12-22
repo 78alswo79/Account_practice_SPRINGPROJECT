@@ -85,8 +85,10 @@
 </head>
 <body>
     <h2>재무 현황</h2>
+    
     <!-- 가계부 작성하기 버튼 -->
     <div class="button-container">
+    	<a href="#" class="button exceldown">액셀 내려받기</a>
         <a href="addAccount.do?gubun=C&year=${year}&month=${month}" class="button add">가계부 작성하기</a>
         <a href="#"<%-- href="addAccount.do?gubun=U&year=${year}&month=${month}" --%> class="button update">가계부 수정하기</a>
         <a href="deleteAccount.do?year=${year}&month=${month}" class="button delete">가계부 삭제하기</a>
@@ -478,6 +480,8 @@
 		})
 	});
 	
+	
+	// 무한 스크롤 페이징. 공부하기 좋은.
 	const responseAppend = document.querySelector('#responseAppend');
 	let isLoading = false; // API 호출 중복 방지 플래그
 	const callback = (entries, io) => {
@@ -500,7 +504,7 @@
 	};
 
 	const intersectOb = new IntersectionObserver(callback, {threshold : 0.7});
-	intersectOb.observe(responseAppend);			// 옵저버 최초 호출.
+	//intersectOb.observe(responseAppend);			// 옵저버 최초 호출.
 	
 	const getAPIList = () => {
 		const baseURL = 'getFilteredList.do';
@@ -548,6 +552,45 @@
 	            });
 			});
 	};
+	
+	// 액셀 다운로드 기능. 공부하기 좋은.
+	const excelDownBtn = document.querySelector('.exceldown');
+	excelDownBtn.addEventListener('click', e => {
+		// a태그의 화면고침 막기.
+		e.preventDefault();
+		const confirmBool = confirm('정말 다운을 받으시겠습니까??');
+		
+		if (confirmBool) {
+			const baseURL = '/excelDown.do';
+			const params = new URLSearchParams({
+				year : resYear
+				, month : resMonth
+			})
+			const apiURL = baseURL+"?"+params;
+			
+			fetch(apiURL, {
+				method : 'GET'
+				, headers: {
+		            'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+		        }
+			}).then(response => {
+				if (!response.ok) throw new Error('Communication Response Error!!' + response.statusText);
+				return response.blob();
+			}).then(blobData => {
+				const url = window.URL.createObjectURL(blobData); // Blob URL 생성
+		        const a = document.createElement('a'); // 링크 요소 생성
+		        a.style.display = 'none';
+		        a.href = url;
+		        
+		        a.download = resYear + '_' + resMonth + '_accountList.xlsx'; // 다운로드할 파일 이름
+		        document.body.appendChild(a); // 링크 요소를 DOM에 추가
+		        a.click(); // 링크 클릭하여 다운로드 시작
+		        window.URL.revokeObjectURL(url); // Blob URL 해제
+			})
+			
+			
+		}
+	});
 	
 </script>
 </html>

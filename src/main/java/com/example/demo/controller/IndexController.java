@@ -1,12 +1,18 @@
 package com.example.demo.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +27,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.dto.PageVO;
 import com.example.demo.dto.Test;
 import com.example.demo.service.AccountService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 
 @RestController
@@ -309,4 +317,47 @@ public class IndexController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	//엑셀로 내려받기, 공부하기 좋은
+	@GetMapping("/excelDown.do")
+	public ResponseEntity<byte[]> excelDown (HttpServletResponse response
+			, @RequestParam String year
+			, @RequestParam String month) throws IOException{
+
+		Test test = new Test();
+		Workbook workBook = new XSSFWorkbook();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		byte[] bytes = outputStream.toByteArray();
+		HttpHeaders headers = new HttpHeaders();
+		
+		try {
+			//response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			//response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
+			
+			if (year == null || month == null) {
+				// 적절한 예외 처리
+				throw new IllegalArgumentException("year, month or AccountService cannot be null");
+			}
+			
+			test.setYear(year);
+			test.setMonth(month);
+			List<Test> getList = accoutService.getFilteredList(test, "");
+			
+			System.out.println("다운 받을 액셀 리스트는??" + getList);
+			// 다운로드 액셀 구성
+			outputStream = accoutService.exportToExcel(getList);
+			bytes = outputStream.toByteArray(); 				// 바이트 배열 가져오기
+			headers.add("Content-Disposition", "attachment; filename=test.xlsx");
+			
+		} catch (IOException e) {
+			e.getStackTrace();
+			e.getMessage();
+		} catch (Exception e) {
+			e.getStackTrace();
+			e.getMessage();
+		} 
+		return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+	}
+	
+	//TODO 액셀 업로드 구현.
 }
