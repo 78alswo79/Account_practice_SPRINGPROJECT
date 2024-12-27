@@ -119,7 +119,7 @@ public class IndexController {
 		// 필터 옵션(== 콘탠트)
 		List<String> getContentList = accoutService.getFilterList(test);
 		
-		if (!testList.isEmpty()) {			
+		if (testList != null && !testList.isEmpty()) {			
 			// 이 화면에는 가계부를 적을 수 있는 기능이있다.
 			mav.addObject("testList", testList);
 			mav.addObject("getContentList", getContentList);
@@ -359,5 +359,5 @@ public class IndexController {
 		return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
 	}
 	
-	//TODO 액셀 업로드 구현.
+	//TODO 액셀 업로드 구현. 시험적으로. 내용 구상은 아직해놓지 않았다.
 }
