@@ -111,6 +111,11 @@
         		</c:forEach>
         	</c:if>
         </select>
+    <%-- 파일 업로드 나중에 구현하기 --%>
+    <!-- <form enctype="multipart/form-data" id = "upload" method = "post" action="upload">
+    	<input type="file" name="file"/>
+    	<button type="submit">업로드</button>
+    </form> -->
 	<div class="button-container">
         <a href="#" class="button perPage fifteen">15개 보기</a>
         <a href="#" class="button perPage twentyfive">25개 보기</a>
@@ -558,37 +563,39 @@
 	excelDownBtn.addEventListener('click', e => {
 		// a태그의 화면고침 막기.
 		e.preventDefault();
-		const confirmBool = confirm('정말 다운을 받으시겠습니까??');
 		
-		if (confirmBool) {
-			const baseURL = '/excelDown.do';
-			const params = new URLSearchParams({
-				year : resYear
-				, month : resMonth
-			})
-			const apiURL = baseURL+"?"+params;
-			
-			fetch(apiURL, {
-				method : 'GET'
-				, headers: {
-		            'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-		        }
-			}).then(response => {
-				if (!response.ok) throw new Error('Communication Response Error!!' + response.statusText);
-				return response.blob();
-			}).then(blobData => {
-				const url = window.URL.createObjectURL(blobData); // Blob URL 생성
-		        const a = document.createElement('a'); // 링크 요소 생성
-		        a.style.display = 'none';
-		        a.href = url;
-		        
-		        a.download = resYear + '_' + resMonth + '_accountList.xlsx'; // 다운로드할 파일 이름
-		        document.body.appendChild(a); // 링크 요소를 DOM에 추가
-		        a.click(); // 링크 클릭하여 다운로드 시작
-		        window.URL.revokeObjectURL(url); // Blob URL 해제
-			})
-			
-			
+		if ('${testList}' != '') {
+			const confirmBool = confirm('정말 다운을 받으시겠습니까??');
+			if (confirmBool) {
+				const baseURL = '/excelDown.do';
+				const params = new URLSearchParams({
+					year : resYear
+					, month : resMonth
+				})
+				const apiURL = baseURL+"?"+params;
+				
+				fetch(apiURL, {
+					method : 'GET'
+					, headers: {
+			            'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+			        }
+				}).then(response => {
+					if (!response.ok) throw new Error('Communication Response Error!!' + response.statusText);
+					return response.blob();
+				}).then(blobData => {
+					const url = window.URL.createObjectURL(blobData); // Blob URL 생성
+			        const a = document.createElement('a'); // 링크 요소 생성
+			        a.style.display = 'none';
+			        a.href = url;
+			        
+			        a.download = resYear + '_' + resMonth + '_accountList.xlsx'; // 다운로드할 파일 이름
+			        document.body.appendChild(a); // 링크 요소를 DOM에 추가
+			        a.click(); // 링크 클릭하여 다운로드 시작
+			        window.URL.revokeObjectURL(url); // Blob URL 해제
+				})
+			}
+		} else {
+			alert('다운로드 받을 내역 리스트가 존재하지 않습니다.');
 		}
 	});
 	
