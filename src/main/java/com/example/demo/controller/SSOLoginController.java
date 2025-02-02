@@ -10,8 +10,7 @@ public class SSOLoginController {
 
 	@GetMapping("/loginForm.do")
 	public String login() {
-//		ModelAndView mav = new ModelAndView();
-//		mav.setViewName("login");
+
 		return "loginForm";
 	}
 }
