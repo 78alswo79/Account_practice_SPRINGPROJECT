@@ -1,12 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="EUC-KR">
-<title>Àç¹« ÇöÈ²</title>
+<title>ì¬ë¬´ í˜„í™©</title>
     <style>
         table {
             width: 100%;
@@ -35,8 +35,8 @@
             background-color: #45a049; /* Darker green */
         }
         .button-container {
-            text-align: right; /* ¹öÆ°À» ¿À¸¥ÂÊ Á¤·Ä */
-            margin-bottom: 20px; /* ¹öÆ°°ú Å×ÀÌºí °£°İ */
+            text-align: right; /* ë²„íŠ¼ì„ ì˜¤ë¥¸ìª½ ì •ë ¬ */
+            margin-bottom: 20px; /* ë²„íŠ¼ê³¼ í…Œì´ë¸” ê°„ê²© */
         }
         .custom-select {
             position: relative;
@@ -44,7 +44,7 @@
             width: 200px;
         }
         .custom-select select {
-            display: none; /* ±âº» ¼¿·ºÆ® ¼û±â±â */
+            display: none; /* ê¸°ë³¸ ì…€ë ‰íŠ¸ ìˆ¨ê¸°ê¸° */
         }
         .select-selected {
             background-color: #f2f2f2;
@@ -69,7 +69,7 @@
             background-color: #ddd;
         }
         
-        /* ¼¿·ºÆ® ¹Ú½º ½ºÅ¸ÀÏ */
+        /* ì…€ë ‰íŠ¸ ë°•ìŠ¤ ìŠ¤íƒ€ì¼ */
         /* .custom-select {
             display: inline-block;
             margin-bottom: 20px;
@@ -79,28 +79,28 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
-            width: 200px; /* ¿øÇÏ´Â ³Êºñ ¼³Á¤ */
+            width: 200px; /* ì›í•˜ëŠ” ë„ˆë¹„ ì„¤ì • */
         }
     </style>
 </head>
 <body>
-    <h2>Àç¹« ÇöÈ²</h2>
+    <h2>ì¬ë¬´ í˜„í™©</h2>
     
-    <!-- °¡°èºÎ ÀÛ¼ºÇÏ±â ¹öÆ° -->
+    <!-- ê°€ê³„ë¶€ ì‘ì„±í•˜ê¸° ë²„íŠ¼ -->
     <div class="button-container">
-    	<a href="#" class="button exceldown">¾×¼¿ ³»·Á¹Ş±â</a>
-        <a href="addAccount.do?gubun=C&year=${year}&month=${month}" class="button add">°¡°èºÎ ÀÛ¼ºÇÏ±â</a>
-        <a href="#"<%-- href="addAccount.do?gubun=U&year=${year}&month=${month}" --%> class="button update">°¡°èºÎ ¼öÁ¤ÇÏ±â</a>
-        <a href="deleteAccount.do?year=${year}&month=${month}" class="button delete">°¡°èºÎ »èÁ¦ÇÏ±â</a>
+    	<a href="#" class="button exceldown">ì•¡ì…€ ë‚´ë ¤ë°›ê¸°</a>
+        <a href="addAccount.do?gubun=C&year=${year}&month=${month}" class="button add">ê°€ê³„ë¶€ ì‘ì„±í•˜ê¸°</a>
+        <a href="#"<%-- href="addAccount.do?gubun=U&year=${year}&month=${month}" --%> class="button update">ê°€ê³„ë¶€ ìˆ˜ì •í•˜ê¸°</a>
+        <a href="deleteAccount.do?year=${year}&month=${month}" class="button delete">ê°€ê³„ë¶€ ì‚­ì œí•˜ê¸°</a>
     </div>
 
-    <!-- id°¡ selectIdÀÎ ¼¿·ºÆ® ¹Ú½º Ãß°¡ -->
-        <label for="selectId">ÇÊÅÍ ¼±ÅÃ:</label>
+    <!-- idê°€ selectIdì¸ ì…€ë ‰íŠ¸ ë°•ìŠ¤ ì¶”ê°€ -->
+        <label for="selectId">í•„í„° ì„ íƒ:</label>
         <select id="selectId">
         	<c:if test="${not empty getContentList}">
         		<c:forEach items="${getContentList}" var="getContentList">
         			<c:choose>
-	        			<c:when test="${getContentList == 'ÀüÃ¼'}">
+	        			<c:when test="${getContentList == 'ì „ì²´'}">
 	        				<option value="">${getContentList}</option>
 	        			</c:when>
 	        			<c:otherwise>
@@ -111,28 +111,28 @@
         		</c:forEach>
         	</c:if>
         </select>
-    <%-- ÆÄÀÏ ¾÷·Îµå ³ªÁß¿¡ ±¸ÇöÇÏ±â --%>
+    <%-- íŒŒì¼ ì—…ë¡œë“œ ë‚˜ì¤‘ì— êµ¬í˜„í•˜ê¸° --%>
     <!-- <form enctype="multipart/form-data" id = "upload" method = "post" action="upload">
     	<input type="file" name="file"/>
-    	<button type="submit">¾÷·Îµå</button>
+    	<button type="submit">ì—…ë¡œë“œ</button>
     </form> -->
 	<div class="button-container">
-        <a href="#" class="button perPage fifteen">15°³ º¸±â</a>
-        <a href="#" class="button perPage twentyfive">25°³ º¸±â</a>
-        <a href="#" class="button perPage fifty">50°³ º¸±â</a>
+        <a href="#" class="button perPage fifteen">15ê°œ ë³´ê¸°</a>
+        <a href="#" class="button perPage twentyfive">25ê°œ ë³´ê¸°</a>
+        <a href="#" class="button perPage fifty">50ê°œ ë³´ê¸°</a>
     </div>
 
     <table>
         <thead>
             <tr>
-                <th><input type="checkbox" id="selectAll" onclick="allCheckBox(this)"></th> <!-- ÀüÃ¼ ¼±ÅÃ Ã¼Å©¹Ú½º -->
-                <th>³âµµ</th>
-                <th>¿ù</th>
-                <th>ÀÏ</th>
-                <th>³»¿ë</th>
-                <th>¼öÀÔ(´ÜÀ§ : ¿ø)</th>
-                <th>ÁöÃâ(´ÜÀ§ : ¿ø)</th>
-                <th>ÀÜ¾×(´ÜÀ§ : ¿ø)</th>
+                <th><input type="checkbox" id="selectAll" onclick="allCheckBox(this)"></th> <!-- ì „ì²´ ì„ íƒ ì²´í¬ë°•ìŠ¤ -->
+                <th>ë…„ë„</th>
+                <th>ì›”</th>
+                <th>ì¼</th>
+                <th>ë‚´ìš©</th>
+                <th>ìˆ˜ì…(ë‹¨ìœ„ : ì›)</th>
+                <th>ì§€ì¶œ(ë‹¨ìœ„ : ì›)</th>
+                <th>ì”ì•¡(ë‹¨ìœ„ : ì›)</th>
             </tr>
         </thead>
         <tbody id = "responseAppend">
@@ -153,20 +153,20 @@
                 </c:when>
                 <c:when test="${empty testList}">	    		
                     <tr>
-                        <td colspan="8"><h2>ÀÛ¼ºÇÑ °¡°èºÎ°¡ ¾ø½À´Ï´Ù!!</h2></td>
+                        <td colspan="8"><h2>ì‘ì„±í•œ ê°€ê³„ë¶€ê°€ ì—†ìŠµë‹ˆë‹¤!!</h2></td>
                     </tr>
                 </c:when>
             </c:choose>
         </tbody>
     </table><br>
     
-    <!-- ÆäÀÌÂ¡ -->
+    <!-- í˜ì´ì§• -->
     <div class="pagination">
-    	<!-- ¸®½ºÆ® °¹¼ö°¡ Á¸ÀçÇÏ´ÂÁö.  -->
+    	<!-- ë¦¬ìŠ¤íŠ¸ ê°¯ìˆ˜ê°€ ì¡´ì¬í•˜ëŠ”ì§€.  -->
         <c:if test="${pageVO.totalPages > 1}">
-        	<!-- ÇöÀçÆäÀÌÁö°¡ 1º¸´Ù Å¬ ¶§, 'ÀÌÀü'À» Ç¥½ÃÇÑ´Ù. -->
+        	<!-- í˜„ì¬í˜ì´ì§€ê°€ 1ë³´ë‹¤ í´ ë•Œ, 'ì´ì „'ì„ í‘œì‹œí•œë‹¤. -->
             <c:if test="${pageVO.currentPage > 1}">
-                <a href="getMyAccountList.do?year=${year}&month=${month}&currentPage=${pageVO.currentPage - 1}">ÀÌÀü</a>
+                <a href="getMyAccountList.do?year=${year}&month=${month}&currentPage=${pageVO.currentPage - 1}">ì´ì „</a>
             </c:if>
             <c:forEach begin="1" end="${pageVO.totalPages}" var="i">
                 <c:choose>
@@ -178,25 +178,25 @@
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
-            <!-- ´ÙÀ½ Ç¥½ÃÇÏ´Â ¹æ¹ı. -->
+            <!-- ë‹¤ìŒ í‘œì‹œí•˜ëŠ” ë°©ë²•. -->
             <c:if test="${pageVO.currentPage < pageVO.totalPages}">
-                <a href="getMyAccountList.do?year=${year}&month=${month}&currentPage=${pageVO.currentPage + 1}">´ÙÀ½</a>
+                <a href="getMyAccountList.do?year=${year}&month=${month}&currentPage=${pageVO.currentPage + 1}">ë‹¤ìŒ</a>
             </c:if>
         </c:if>
     </div>
     
     
     <div class="button-container">
-        <a href="addAccount.do?gubun=C&year=${year}&month=${month}" class="button add">°¡°èºÎ ÀÛ¼ºÇÏ±â</a>
-        <a href="#"<%-- href="addAccount.do?gubun=U&year=${year}&month=${month}" --%> class="button update">°¡°èºÎ ¼öÁ¤ÇÏ±â</a>
-        <a href="deleteAccount.do?year=${year}&month=${month}" class="button delete">°¡°èºÎ »èÁ¦ÇÏ±â</a>
+        <a href="addAccount.do?gubun=C&year=${year}&month=${month}" class="button add">ê°€ê³„ë¶€ ì‘ì„±í•˜ê¸°</a>
+        <a href="#"<%-- href="addAccount.do?gubun=U&year=${year}&month=${month}" --%> class="button update">ê°€ê³„ë¶€ ìˆ˜ì •í•˜ê¸°</a>
+        <a href="deleteAccount.do?year=${year}&month=${month}" class="button delete">ê°€ê³„ë¶€ ì‚­ì œí•˜ê¸°</a>
     </div>
 
 
 </body>
 
 <script type="text/javascript">
-	let seqArray = [];
+	let seqArray = [];						<%-- ì„ íƒëœ ì²´í¬ë°•ìŠ¤ --%>
 	const resYear = ${year};
 	const resMonth = ${month};
 	
@@ -205,24 +205,24 @@
 	});
 	
 	
-	// ÀüÃ¼ Ã¼Å©¹Ú½º ¼±ÅÃ/ÇØÁ¦.
+	// ì „ì²´ ì²´í¬ë°•ìŠ¤ ì„ íƒ/í•´ì œ.
 	function allCheckBox(param) {
 		const selectedItems = document.querySelectorAll('input[name="selectedItems"]');
-    	// ÁøÂ¥ °£´ÜÇÑ ¹æ¹ı.
-    	// ºĞ±âÃ³¸® ¾øÀÌ, ÀüÃ¼¼±ÅÃ Ã¼Å©¹Ú½º °ªÀ» ³Ö¾îÁØ´Ù!!. °øºÎÇÒ¸¸ÇÏ´Ù.
+    	// ì§„ì§œ ê°„ë‹¨í•œ ë°©ë²•.
+    	// ë¶„ê¸°ì²˜ë¦¬ ì—†ì´, ì „ì²´ì„ íƒ ì²´í¬ë°•ìŠ¤ ê°’ì„ ë„£ì–´ì¤€ë‹¤!!. ê³µë¶€í• ë§Œí•˜ë‹¤.
     	selectedItems.forEach((item, idx) => {
     	    item.checked = param.checked;
     	});
 	};
 
 	
-	// ¾÷µ¥ÀÌÆ® ÄÁÆ²·Ñ·¯ ½ºÅ©¸³Æ®
+	// ì—…ë°ì´íŠ¸ ì»¨í‹€ë¡¤ëŸ¬ ìŠ¤í¬ë¦½íŠ¸
 	const updateBtn = document.querySelectorAll('.button.update');
 	//const selectedItems = document.querySelectorAll('input[name="selectedItems"]');
 	updateBtn.forEach(item => {		
 		item.addEventListener('click', e => {
 			e.preventDefault();
-			// Ã¼Å©¹Ú½º °ª Áßº¹¹æÁö
+			// ì²´í¬ë°•ìŠ¤ ê°’ ì¤‘ë³µë°©ì§€
 			// seqArray = [];
 			
 			let param = [];
@@ -257,13 +257,13 @@
 			console.log(param);
 			
 			
-			// array°´Ã¼. À¯È¿¼º Ã¼Å© ¹æ¹ı. °øºÎÇÏ±â ÁÁÀº.
+			// arrayê°ì²´. ìœ íš¨ì„± ì²´í¬ ë°©ë²•. ê³µë¶€í•˜ê¸° ì¢‹ì€.
 			if (param.length > 0 && Array.isArray(param)) {
 				if (param.length > 10) {
-					alert('¾÷µ¥ÀÌÆ®´Â 10°³ÇàÀ» ÇÒ ¼ö ¾ø½À´Ï´Ù.!');
+					alert('ì—…ë°ì´íŠ¸ëŠ” 10ê°œí–‰ì„ í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.!');
 					return false;
 				} else {
-					//°øºÎÇÏ±â ÁÁÀº, array.join(',') : ¹è¿­ÀÇ ¿ä¼Ò¸¦ ½°Ç¥·Î ±¸ºĞÇÏ¿© ÇÏ³ªÀÌ ¹®ÀÚ¿­·Î ¸¸µç´Ù.
+					//ê³µë¶€í•˜ê¸° ì¢‹ì€, array.join(',') : ë°°ì—´ì˜ ìš”ì†Œë¥¼ ì‰¼í‘œë¡œ êµ¬ë¶„í•˜ì—¬ í•˜ë‚˜ì´ ë¬¸ìì—´ë¡œ ë§Œë“ ë‹¤.
 					//window.location.href = 'addAccount.do?seqArray=' + seqArray.join(',') + '&gubun=U&year=' + ${year} + '&month=' + ${month};
 					fetch('updateAccout.do', {
 						method : "POST"
@@ -280,38 +280,32 @@
 							alert(data.resMessage);
 						}
 					}).catch(error => {
-						alert('¾î¶°ÇÑ ÀÌÀ¯·Î ¼­¹ö¿ÍÀÇ Åë½ÅÀÌ ½ÇÆĞÇß½À´Ï´Ù.' + error);
+						alert('ì–´ë– í•œ ì´ìœ ë¡œ ì„œë²„ì™€ì˜ í†µì‹ ì´ ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.' + error);
 					}).finally(() => {
-						// ¹«Á¶°Ç ½ÇÇàµÇ¾î¾ß ÇÒ ·ÎÁ÷ ½áÁÖ¸é µÊ.
+						// ë¬´ì¡°ê±´ ì‹¤í–‰ë˜ì–´ì•¼ í•  ë¡œì§ ì¨ì£¼ë©´ ë¨.
 						window.location.href = 'getMyAccountList.do?year=' + year + '&month=' + month;
 					})
 				}
 
 			} else {
-				alert('Ã¼Å©¹Ú½º¸¦ ¼±ÅÃÇØ ÁÖ¼¼¿ä.!');
+				alert('ì²´í¬ë°•ìŠ¤ë¥¼ ì„ íƒí•´ ì£¼ì„¸ìš”.!');
 				return false;
 			}
 		});
 	});
 	
-	// »èÁ¦ ÄÁÆ®·Ñ·¯.
+	// ì‚­ì œ ì»¨íŠ¸ë¡¤ëŸ¬.
 	const deleteBtn = document.querySelectorAll('.button.delete');
 	deleteBtn.forEach(item => {		
 		item.addEventListener('click', e => {
-			// Ã¼Å©¹Ú½º °ª Áßº¹¹æÁö
+			// ì²´í¬ë°•ìŠ¤ ê°’ ì¤‘ë³µë°©ì§€
 			seqArray = [];
 			e.preventDefault();
 			
-			selectedItems.forEach((item, idx) => {
-	    	    if (item.checked) {
-	    	    	// console.log(item.value);
-	    	    	seqArray.push(item.value);
-	    	    }
-	    	});
+			const resCheckedLength = checkboxValidation();
 			
-			<%-- array°´Ã¼. À¯È¿¼º Ã¼Å© ¹æ¹ı. °øºÎÇÏ±â ÁÁÀº.--%>
-			if (seqArray === [] || (seqArray.length > 0 && Array.isArray(seqArray)) ) {				
-				<%-- °øºÎÇÏ±â ÁÁÀº, array.join(',') : ¹è¿­ÀÇ ¿ä¼Ò¸¦ ½°Ç¥·Î ±¸ºĞÇÏ¿© ÇÏ³ªÀÌ ¹®ÀÚ¿­·Î ¸¸µç´Ù.--%>
+			if (resCheckedLength > 0) {				
+				<%-- ê³µë¶€í•˜ê¸° ì¢‹ì€, array.join(',') : ë°°ì—´ì˜ ìš”ì†Œë¥¼ ì‰¼í‘œë¡œ êµ¬ë¶„í•˜ì—¬ í•˜ë‚˜ì´ ë¬¸ìì—´ë¡œ ë§Œë“ ë‹¤.--%>
 				//window.location.href = 'addAccount.do?seqArray=' + seqArray.join(',') + '&gubun=U&year=' + ${year} + '&month=' + ${month};
 				fetch('deleteAccount.do', {
 					method : 'POST'
@@ -332,23 +326,23 @@
 				  	alert('There was a problem with the fetch operation: '+error);
 			  	});
 			} else {
-				alert('Ã¼Å©¹Ú½º¸¦ ¼±ÅÃÇØ ÁÖ¼¼¿ä.!');
+				alert('ì²´í¬ë°•ìŠ¤ë¥¼ ì„ íƒí•´ ì£¼ì„¸ìš”.!');
 				return false;
 			}
 		});
 	});
 	
-	// ÇÊÅÍ¿É¼Ç ½ºÅ©¸³Æ® Â¥±â
+	// í•„í„°ì˜µì…˜ ìŠ¤í¬ë¦½íŠ¸ ì§œê¸°
 	const selectId = document.querySelector('#selectId');
 	selectId.addEventListener('change', e => {
-		//console.log('µşÄ¬!');
+		//console.log('ë”¸ì¹µ!');
 		//console.log('e', e.target.value);
-		const baseURL = 'getFilteredList.do';
+		const baseURL = 'api/getFilteredList.do';
 		const param = new URLSearchParams({
 			year : resYear
 			, month : resMonth
 			, filterOption : e.target.value
-			// ¾ğÁ¨°¡´Â Ãß°¡ÇØÁà¾ß ÇÒÁöµµ?, perPage
+			// ì–¸ì  ê°€ëŠ” ì¶”ê°€í•´ì¤˜ì•¼ í• ì§€ë„?, perPage
 		});
 		
 		const apiURL = baseURL+'?'+param.toString();
@@ -363,25 +357,25 @@
 				const responseAppend = document.querySelector('#responseAppend');
 
                 if (data.resCode === 200) {                	
-					// ÅÂ±×°ª »ı¼ºÇØ¼­ ºÙ¿©ÁÖ±â.
-					// ÀÚ½Ä¿ä¼Òµé ÇÑ¹ø¿¡ Áö¿ì±â. °øºÎÇÏ±â ÁÁÀº.
+					// íƒœê·¸ê°’ ìƒì„±í•´ì„œ ë¶™ì—¬ì£¼ê¸°.
+					// ìì‹ìš”ì†Œë“¤ í•œë²ˆì— ì§€ìš°ê¸°. ê³µë¶€í•˜ê¸° ì¢‹ì€.
 					responseAppend.innerHTML = '';
 					//let resTrTag;
-					// trÀÇ °³¼ö´Â °ğ testList.size()¸¦ ÀÇ¹Ì.
+					// trì˜ ê°œìˆ˜ëŠ” ê³§ testList.size()ë¥¼ ì˜ë¯¸.
 	                data.testList.forEach((item, idx) => {
 						const trTag = document.createElement('tr');
 	                	const resTrTag = makeFields({trTag, item});
-	                	// °øºÎÇÏ±â ÁÁÀº. °´Ã¼.innerHTMLÀº ¹®ÀÚ¿­ÀÌ±â¶§¹®¿¡ ÀÌ»óÇÏ°Ô Ç¥½Ã°¡ ³²
+	                	// ê³µë¶€í•˜ê¸° ì¢‹ì€. ê°ì²´.innerHTMLì€ ë¬¸ìì—´ì´ê¸°ë•Œë¬¸ì— ì´ìƒí•˜ê²Œ í‘œì‹œê°€ ë‚¨
 	                	responseAppend.appendChild(resTrTag);
 					});
                 } else {
-                	alert('µ¥ÀÌÅÍ¸¦ ºÒ·¯¿ÀÁö ¸øÇß½À´Ï´Ù.');
+                	alert('ë°ì´í„°ë¥¼ ë¶ˆëŸ¬ì˜¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.');
                 }
 			}).catch(error => {
-				alert('error°¡ ³µ½À´Ï´Ù.' + error);
+				alert('errorê°€ ë‚¬ìŠµë‹ˆë‹¤.' + error);
 			}).finally(()=> {
 				const pagination = document.querySelectorAll('.pagination');
-				// ÇÊÅÍ¿É¼ÇÀÌ 'ÀüÃ¼'°¡ ¾Æ´Ñ°æ¿ì´Â ÇÏ´ç ÆäÀÌÂ¡ ºä º¸¿©ÁÖ±â
+				// í•„í„°ì˜µì…˜ì´ 'ì „ì²´'ê°€ ì•„ë‹Œê²½ìš°ëŠ” í•˜ë‹¹ í˜ì´ì§• ë·° ë³´ì—¬ì£¼ê¸°
 				if (e.target.value !== '') {
 					pagination.forEach((item, idx) => {
 						item.style.display = 'none';
@@ -426,7 +420,7 @@
 		return paramObj.trTag;
 	}
 
-	// ÇÊÅÍ¿É¼Ç, viewPer ½Ã ¿ÉÀú¹öÆĞÅÏÀ» ÀÌ¿ëÇÑ(interSect?) ÆäÀÌÂ¡ ½ºÅ©·Ñ Â¥±â
+	// í•„í„°ì˜µì…˜, viewPer ì‹œ ì˜µì €ë²„íŒ¨í„´ì„ ì´ìš©í•œ(interSect?) í˜ì´ì§• ìŠ¤í¬ë¡¤ ì§œê¸°
 	const perPageBtn = document.querySelectorAll('.button.perPage');
 	let viewNumber;
 	perPageBtn.forEach((item, idx) => {
@@ -440,12 +434,12 @@
 				viewNumber = 50;
 			}
 			
-			const baseURL = 'getFilteredList.do';
+			const baseURL = 'api/getFilteredList.do';
 			const params = new URLSearchParams({
 				year : resYear
 				, month : resMonth
 				, perPage : viewNumber
-				// ¾ğÁ¨°¡´Â Ãß°¡ÇØÁà¾ß ÇÒÁöµµ?, filterOption°ª.
+				// ì–¸ì  ê°€ëŠ” ì¶”ê°€í•´ì¤˜ì•¼ í• ì§€ë„?, filterOptionê°’.
 			});
 			const apiURL = baseURL + '?' + params.toString();
 			
@@ -459,22 +453,22 @@
 				const responseAppend = document.querySelector('#responseAppend');
 				
                 if (data.resCode === 200) {                	
-					// ÅÂ±×°ª »ı¼ºÇØ¼­ ºÙ¿©ÁÖ±â.
-					// ÀÚ½Ä¿ä¼Òµé ÇÑ¹ø¿¡ Áö¿ì±â. °øºÎÇÏ±â ÁÁÀº.
+					// íƒœê·¸ê°’ ìƒì„±í•´ì„œ ë¶™ì—¬ì£¼ê¸°.
+					// ìì‹ìš”ì†Œë“¤ í•œë²ˆì— ì§€ìš°ê¸°. ê³µë¶€í•˜ê¸° ì¢‹ì€.
 					responseAppend.innerHTML = '';
-					// trÀÇ °³¼ö´Â °ğ testList.size()¸¦ ÀÇ¹Ì.
+					// trì˜ ê°œìˆ˜ëŠ” ê³§ testList.size()ë¥¼ ì˜ë¯¸.
 	                data.testList.forEach((item, idx) => {
 						const trTag = document.createElement('tr');
 	                	const resTrTag = makeFields({trTag, item});
-	                	// °øºÎÇÏ±â ÁÁÀº. °´Ã¼.innerHTMLÀº ¹®ÀÚ¿­ÀÌ±â¶§¹®¿¡ ÀÌ»óÇÏ°Ô Ç¥½Ã°¡ ³²
+	                	// ê³µë¶€í•˜ê¸° ì¢‹ì€. ê°ì²´.innerHTMLì€ ë¬¸ìì—´ì´ê¸°ë•Œë¬¸ì— ì´ìƒí•˜ê²Œ í‘œì‹œê°€ ë‚¨
 	                	responseAppend.appendChild(resTrTag);
 					});
                 } else {
-                	alert('µ¥ÀÌÅÍ¸¦ ºÒ·¯¿ÀÁö ¸øÇß½À´Ï´Ù.');
+                	alert('ë°ì´í„°ë¥¼ ë¶ˆëŸ¬ì˜¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.');
                 }
 			})
 			.catch(error => {
-				console.log('error°¡ ¹ß»ıÇß½À´Ï´Ù.', error);
+				console.log('errorê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤.', error);
 			})
 			.finally(()=> {
 				const pagination = document.querySelectorAll('.pagination');
@@ -486,38 +480,38 @@
 	});
 	
 	
-	// ¹«ÇÑ ½ºÅ©·Ñ ÆäÀÌÂ¡. °øºÎÇÏ±â ÁÁÀº.
+	// ë¬´í•œ ìŠ¤í¬ë¡¤ í˜ì´ì§•. ê³µë¶€í•˜ê¸° ì¢‹ì€.
 	const responseAppend = document.querySelector('#responseAppend');
-	let isLoading = false; // API È£Ãâ Áßº¹ ¹æÁö ÇÃ·¡±×
+	let isLoading = false; // API í˜¸ì¶œ ì¤‘ë³µ ë°©ì§€ í”Œë˜ê·¸
 	const callback = (entries, io) => {
 		entries.forEach(item => {
 			/* if (item.isIntersecting) {
 				intersectOb.unobserve(item.target);
-				console.log('¿ÉÀú¹ö ´õÀÌ»ó °¨Áö ¾ÈÇÔ.');
+				console.log('ì˜µì €ë²„ ë”ì´ìƒ ê°ì§€ ì•ˆí•¨.');
 				getAPIList();
 			} else {
-				console.log('¿ÉÀú¹ö????.');
+				console.log('ì˜µì €ë²„????.');
 			} */
 			
 			if (item.isIntersecting && !isLoading) {
-	            isLoading = true; // API È£Ãâ ½ÃÀÛ
-	            intersectOb.unobserve(item.target); // ÇöÀç Å¸°ÙÀ» ¿ÉÀú¹ö¿¡¼­ Á¦°Å
-	            console.log('¿ÉÀú¹ö ´õÀÌ»ó °¨Áö ¾ÈÇÔ.');
+	            isLoading = true; // API í˜¸ì¶œ ì‹œì‘
+	            intersectOb.unobserve(item.target); // í˜„ì¬ íƒ€ê²Ÿì„ ì˜µì €ë²„ì—ì„œ ì œê±°
+	            console.log('ì˜µì €ë²„ ë”ì´ìƒ ê°ì§€ ì•ˆí•¨.');
 	            getAPIList();
 	        }
 		})
 	};
 
 	const intersectOb = new IntersectionObserver(callback, {threshold : 0.7});
-	//intersectOb.observe(responseAppend);			// ¿ÉÀú¹ö ÃÖÃÊ È£Ãâ.
+	//intersectOb.observe(responseAppend);			// ì˜µì €ë²„ ìµœì´ˆ í˜¸ì¶œ.
 	
 	const getAPIList = () => {
-		const baseURL = 'getFilteredList.do';
+		const baseURL = 'api/getFilteredList.do';
 		const params = new URLSearchParams({
 			year : resYear
 			, month : resMonth
 			, perPage : 5
-			// ¾ğÁ¨°¡´Â Ãß°¡ÇØÁà¾ß ÇÒÁöµµ?, filterOption°ª.
+			// ì–¸ì  ê°€ëŠ” ì¶”ê°€í•´ì¤˜ì•¼ í• ì§€ë„?, filterOptionê°’.
 		});
 		const apiURL = baseURL + '?' + params.toString();
 		
@@ -531,26 +525,26 @@
 				const responseAppend = document.querySelector('#responseAppend');
 				
 	            if (data.resCode === 200) {                	
-					// ÅÂ±×°ª »ı¼ºÇØ¼­ ºÙ¿©ÁÖ±â.
-					// ÀÚ½Ä¿ä¼Òµé ÇÑ¹ø¿¡ Áö¿ì±â. °øºÎÇÏ±â ÁÁÀº.
+					// íƒœê·¸ê°’ ìƒì„±í•´ì„œ ë¶™ì—¬ì£¼ê¸°.
+					// ìì‹ìš”ì†Œë“¤ í•œë²ˆì— ì§€ìš°ê¸°. ê³µë¶€í•˜ê¸° ì¢‹ì€.
 					// responseAppend.innerHTML = '';
-					// trÀÇ °³¼ö´Â °ğ testList.size()¸¦ ÀÇ¹Ì.
+					// trì˜ ê°œìˆ˜ëŠ” ê³§ testList.size()ë¥¼ ì˜ë¯¸.
 	                data.testList.forEach((item, idx) => {
 						const trTag = document.createElement('tr');
 	                	const resTrTag = makeFields({trTag, item});
-	                	// °øºÎÇÏ±â ÁÁÀº. °´Ã¼.innerHTMLÀº ¹®ÀÚ¿­ÀÌ±â¶§¹®¿¡ ÀÌ»óÇÏ°Ô Ç¥½Ã°¡ ³²
+	                	// ê³µë¶€í•˜ê¸° ì¢‹ì€. ê°ì²´.innerHTMLì€ ë¬¸ìì—´ì´ê¸°ë•Œë¬¸ì— ì´ìƒí•˜ê²Œ í‘œì‹œê°€ ë‚¨
 	                	responseAppend.appendChild(resTrTag);
 					});
 	            } else {
-	            	alert('µ¥ÀÌÅÍ¸¦ ºÒ·¯¿ÀÁö ¸øÇß½À´Ï´Ù.');
+	            	alert('ë°ì´í„°ë¥¼ ë¶ˆëŸ¬ì˜¤ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.');
 	            }
 			})
 			.catch(error => {
-				console.log('error°¡ ¹ß»ıÇß½À´Ï´Ù.', error);
+				console.log('errorê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤.', error);
 			})
 			.finally(()=> {
-				isLoading = false; 					// API È£Ãâ ¿Ï·á
-	            intersectOb.observe(responseAppend.children[responseAppend.children.length - 2]); // ´Ù½Ã ¿ÉÀú¹ö ¼³Á¤
+				isLoading = false; 					// API í˜¸ì¶œ ì™„ë£Œ
+	            intersectOb.observe(responseAppend.children[responseAppend.children.length - 2]); // ë‹¤ì‹œ ì˜µì €ë²„ ì„¤ì •
 	            const pagination = document.querySelectorAll('.pagination');
 	            pagination.forEach((item) => {
 	                item.style.display = 'none';
@@ -558,14 +552,14 @@
 			});
 	};
 	
-	// ¾×¼¿ ´Ù¿î·Îµå ±â´É. °øºÎÇÏ±â ÁÁÀº.
+	// ì•¡ì…€ ë‹¤ìš´ë¡œë“œ ê¸°ëŠ¥. ê³µë¶€í•˜ê¸° ì¢‹ì€.
 	const excelDownBtn = document.querySelector('.exceldown');
 	excelDownBtn.addEventListener('click', e => {
-		// aÅÂ±×ÀÇ È­¸é°íÄ§ ¸·±â.
+		// aíƒœê·¸ì˜ í™”ë©´ê³ ì¹¨ ë§‰ê¸°.
 		e.preventDefault();
 		
 		if ('${testList}' != '') {
-			const confirmBool = confirm('Á¤¸» ´Ù¿îÀ» ¹ŞÀ¸½Ã°Ú½À´Ï±î??');
+			const confirmBool = confirm('ì •ë§ ë‹¤ìš´ì„ ë°›ìœ¼ì‹œê² ìŠµë‹ˆê¹Œ??');
 			if (confirmBool) {
 				const baseURL = '/excelDown.do';
 				const params = new URLSearchParams({
@@ -583,21 +577,32 @@
 					if (!response.ok) throw new Error('Communication Response Error!!' + response.statusText);
 					return response.blob();
 				}).then(blobData => {
-					const url = window.URL.createObjectURL(blobData); // Blob URL »ı¼º
-			        const a = document.createElement('a'); // ¸µÅ© ¿ä¼Ò »ı¼º
+					const url = window.URL.createObjectURL(blobData); // Blob URL ìƒì„±
+			        const a = document.createElement('a'); // ë§í¬ ìš”ì†Œ ìƒì„±
 			        a.style.display = 'none';
 			        a.href = url;
 			        
-			        a.download = resYear + '_' + resMonth + '_accountList.xlsx'; // ´Ù¿î·ÎµåÇÒ ÆÄÀÏ ÀÌ¸§
-			        document.body.appendChild(a); // ¸µÅ© ¿ä¼Ò¸¦ DOM¿¡ Ãß°¡
-			        a.click(); // ¸µÅ© Å¬¸¯ÇÏ¿© ´Ù¿î·Îµå ½ÃÀÛ
-			        window.URL.revokeObjectURL(url); // Blob URL ÇØÁ¦
+			        a.download = resYear + '_' + resMonth + '_accountList.xlsx'; // ë‹¤ìš´ë¡œë“œí•  íŒŒì¼ ì´ë¦„
+			        document.body.appendChild(a); // ë§í¬ ìš”ì†Œë¥¼ DOMì— ì¶”ê°€
+			        a.click(); // ë§í¬ í´ë¦­í•˜ì—¬ ë‹¤ìš´ë¡œë“œ ì‹œì‘
+			        window.URL.revokeObjectURL(url); // Blob URL í•´ì œ
 				})
 			}
 		} else {
-			alert('´Ù¿î·Îµå ¹ŞÀ» ³»¿ª ¸®½ºÆ®°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.');
+			alert('ë‹¤ìš´ë¡œë“œ ë°›ì„ ë‚´ì—­ ë¦¬ìŠ¤íŠ¸ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.');
 		}
 	});
+	
+	// checkboxValidation
+	const checkboxValidation = () => {
+		document.querySelectorAll('input[name="selectedItems"]').forEach((item, idx) => {
+		    if (item.checked) {
+		    	//console.log('item', item)
+		    	seqArray.push(item.value);
+		    }
+		});
+		return seqArray.length;
+	}
 	
 </script>
 </html>
