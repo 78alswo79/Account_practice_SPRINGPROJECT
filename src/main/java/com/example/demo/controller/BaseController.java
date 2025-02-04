@@ -22,6 +22,9 @@ import com.example.demo.service.AccountService;
 import com.example.demo.util.CustomException;
 import com.example.demo.util.JwtUtilClass;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class BaseController {
 
@@ -69,13 +72,24 @@ public class BaseController {
 	public ModelAndView getMethodName(@RequestParam String year, @RequestParam String month
 			, @RequestParam(required = false, defaultValue = "0") int currentPage
 			, @RequestParam(required = false/* , defaultValue = "" */) String filterOption
-			, @RequestParam(required = false/* , defaultValue = "15" */) Integer perPage) {
-		List<Test> testList = new ArrayList<>();
+			, @RequestParam(required = false/* , defaultValue = "15" */) Integer perPage
+			, HttpSession session) {
+		
 		ModelAndView mav = new ModelAndView();
+		// 공부하기 좋은. 
+		// 방법 1. 예외처리 할 때,
+		// 방법 2. 리다이렉트
+		if (session.getAttribute("user") == null) { 
+			// throw new CustomException("검증된 유저가 아닙니다. 접근이 안됩니다."); 
+			mav.setViewName("redirect:/login/loginForm.do");
+			return mav;
+		}
+		
+		List<Test> testList = new ArrayList<>();
 		PageVO pageVO;
 		
-		mav.setViewName("getMyAccountList");
 		
+		mav.setViewName("getMyAccountList");
 		Test test = new Test();
 		
 		test = accoutService.setDateYearMonth(year, month);
