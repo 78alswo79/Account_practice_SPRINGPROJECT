@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.dto.PageVO;
 import com.example.demo.dto.Test;
 import com.example.demo.service.AccountService;
+import com.example.demo.util.CustomException;
 import com.example.demo.util.JwtUtilClass;
 
 @Controller
@@ -133,9 +134,10 @@ public class BaseController {
 									, @RequestParam String gubun, @RequestParam (required = false) String seqArray) {
 		
 		ModelAndView mav = new ModelAndView();
-		if (gubun == null) {
+
+		if (gubun == "") {
 			// 적절한 예외 처리
-		    throw new IllegalArgumentException("gubun, year, month or AccountService cannot be null");
+		    throw new CustomException("gubun, year, month or AccountService cannot be null");
 		}
 		
 		// C, 인서트 작업.

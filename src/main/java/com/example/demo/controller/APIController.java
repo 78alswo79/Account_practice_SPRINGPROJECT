@@ -10,29 +10,24 @@ import java.util.Map;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dto.PageVO;
 import com.example.demo.dto.Test;
 import com.example.demo.service.AccountService;
 import com.example.demo.util.CookieUtil;
+import com.example.demo.util.CustomException;
 import com.example.demo.util.JwtUtilClass;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -61,7 +56,7 @@ public class APIController {
 	public /*Map<String, Object>*/ void login(@RequestParam String username, @RequestParam String password
 			,HttpServletRequest request, HttpServletResponse resP) throws IOException {
 		if (username.isBlank() || password.isBlank()) {
-			throw new IllegalArgumentException("user is not NUll!!!");
+			throw new CustomException("user is not NUll!!!");
 		}
 		
 		//String userName = user.get("userName").toString();
@@ -78,7 +73,6 @@ public class APIController {
 			resP.sendRedirect("/index.do");
             //return response;
 		} else {
-			//throw new RuntimeException("Invalid credentials");
 			resP.sendRedirect("/login.do");
 		}
 	}
@@ -93,7 +87,7 @@ public class APIController {
 		PageVO pageVO;
 		
 		if (year.isBlank() || month.isBlank()) {
-			throw new Exception("year, month NULL!!!");
+			throw new CustomException("year, month NULL!!!");
 		}
 		
 		if (currentPage == 0) {
@@ -135,7 +129,7 @@ public class APIController {
 		
 		if (entity == null || test == null || accoutService == null) {
 		    // 적절한 예외 처리
-		    throw new IllegalArgumentException("Entity, Test, or AccountService cannot be null");
+		    throw new CustomException("Entity, Test, or AccountService cannot be null");
 		}	
 		int getSeq = accoutService.getSeq(entity);
 		entity.setSeq(getSeq);
@@ -260,7 +254,7 @@ public class APIController {
 			
 			if (year == null || month == null) {
 				// 적절한 예외 처리
-				throw new IllegalArgumentException("year, month or AccountService cannot be null");
+				throw new CustomException("year, month or AccountService cannot be null");
 			}
 			
 			test.setYear(year);
