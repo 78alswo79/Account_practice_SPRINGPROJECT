@@ -9,6 +9,7 @@ import com.example.demo.util.CustomException;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+// 공부하기 좋은.
 @ControllerAdvice("com.example.demo")
 public class CustomExceptionHandler {
 	
