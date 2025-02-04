@@ -76,14 +76,17 @@ public class BaseController {
 			, HttpSession session) {
 		
 		ModelAndView mav = new ModelAndView();
-		// 공부하기 좋은. 
+		// 공부하기 좋은.
 		// 방법 1. 예외처리 할 때,
 		// 방법 2. 리다이렉트
-		if (session.getAttribute("user") == null) { 
-			// throw new CustomException("검증된 유저가 아닙니다. 접근이 안됩니다."); 
-			mav.setViewName("redirect:/login/loginForm.do");
-			return mav;
-		}
+		// 얘는 결국 주석처리 한다.
+//		if (session.getAttribute("user") == null) { 
+//			// throw new CustomException("검증된 유저가 아닙니다. 접근이 안됩니다."); 
+//			mav.setViewName("redirect:/login/loginForm.do");
+//			return mav;
+//		}
+		
+		// TODO jwt토큰으로 유효성음 검증하는 소스를 만들어보자.
 		
 		List<Test> testList = new ArrayList<>();
 		PageVO pageVO;

@@ -30,6 +30,7 @@ import com.example.demo.util.JwtUtilClass;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 @RestController
@@ -54,7 +55,9 @@ public class APIController {
 	// 공부하기좋은. @RequestBody(Map<String, Object>)로 받을 경우에는 프론트에서 JSON형식으로. 
 	// 공부하기호은. @RequestParam으로 받을 경우엔, 각각 Stringd로 받는다.
 	public /*Map<String, Object>*/ void login(@RequestParam String username, @RequestParam String password
-			,HttpServletRequest request, HttpServletResponse resP) throws IOException {
+			, HttpServletRequest request
+			, HttpServletResponse resP
+			, HttpSession session) throws IOException {
 		if (username.isBlank() || password.isBlank()) {
 			throw new CustomException("user is not NUll!!!");
 		}
@@ -69,8 +72,13 @@ public class APIController {
 			Map<String, Object> response = new HashMap<String, Object>();
 			response.put("token", token);
 			
-			resP.addCookie(cookieUtil.createCookies(token));
-			resP.sendRedirect("/index.do");
+			if (!token.isBlank()) {
+				resP.addCookie(cookieUtil.createCookies(token));
+				resP.sendRedirect("/index.do");
+				
+				// user 세션 여기에서 첫 생성.
+				session.setAttribute("user", username);
+			}
             //return response;
 		} else {
 			resP.sendRedirect("/login/loginForm.do");

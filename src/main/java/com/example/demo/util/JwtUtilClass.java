@@ -12,7 +12,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtUtilClass {
 	private final String SECRET_KEY = "my_Hekireky_key";
-	private final long EXPIRE_TIME = 1000 * 60 * 60;
+	private final long EXPIRE_TIME = 1000 * 60 * 60;		// 기본 1시간
 	
 	// JWT  생성
 	public String generateToken(String userName) {
@@ -34,5 +34,7 @@ public class JwtUtilClass {
 				.compact();
 	}
 	
+	// TODO JWT 검증 메소드 구현하기
+	// TODO 클레임 추출 메소드
 	
 }
