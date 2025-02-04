@@ -42,54 +42,28 @@
 
 	<h2>재무 현황</h2>
 	<!-- 데이터 입력을 위한 폼 -->
-	<c:choose>
-		<c:when test="${gubun eq 'C'}">
-			<form id="accountForm" action="/api/insertAccout.do" method="post">
-			    <button type="submit" id="submit"		class="button" >입력</button>
-			    <button type="button" id="addButton" 	class="button">추가하기</button>
-			    <div class="form-row">
-			        <label for="year">년도:</label>
-			        <input type="text" id="year" name="year" value="<c:out value='${year}'/>" readonly>
-			        <label for="month">월:</label>
-			        <input type="text" id="month" name="month" value="<c:out value='${month}'/>" readonly>
-			        <label for="days">일:</label>
-			        <input type="text" id="days" name="days" required>
-			        <label for="content">내용:</label>
-			        <input type="text" id="content" name="content" required>
-			        <label for="income">수입:</label>
-			        <input type="text" id="income" name="income" required value="0">
-			        <label for="spending">지출:</label>
-			        <input type="text" id="spending" name="spending" required value="0">
-			        <label for="balance">잔액:</label>
-			        <input type="text" id="balance" name="balance" required value="0">
-			    </div>
-			</form>
-		</c:when>
-		<c:when test="${gubun eq 'U'}">
-			<form id="accountForm" action="updateAccout.do" method="post">
-			    <button type="submit" id="submit"		class="button" >수정하기</button>
-			   	<!--  <button type="button" id="addButton" 	class="button">추가하기</button> -->
-			   	<c:forEach var="updateList" items="${updateList}">
-				    <div class="form-row">
-				        <label for="year">년도:</label>
-				        <input type="text" id="year" name="year" value="<c:out value='${updateList.year}'/>" readonly>
-				        <label for="month">월:</label>
-				        <input type="text" id="month" name="month" value="<c:out value='${updateList.month}'/>" readonly>
-				        <label for="days">일:</label>
-				        <input type="text" id="days" name="days" required value="<c:out value='${updateList.days}'/>">
-				        <label for="content">내용:</label>
-				        <input type="text" id="content" name="content" required value="<c:out value='${updateList.content}'/>">
-				        <label for="income">수입:</label>
-				        <input type="text" id="income" name="income" required value="<c:out value='${updateList.income}'/>" >
-				        <label for="spending">지출:</label>
-				        <input type="text" id="spending" name="spending" required value="<c:out value='${updateList.spending}'/>">
-				        <label for="balance">잔액:</label>
-				        <input type="text" id="balance" name="balance" required value="<c:out value='${updateList.balance}'/>">
-				    </div>
-			   	</c:forEach>
-			</form>
-		</c:when>
-	</c:choose>
+	<c:if test="${gubun eq 'C'}">
+		<form id="accountForm" action="/api/insertAccout.do" method="post">
+		    <button type="submit" id="submit"		class="button" >입력</button>
+		    <button type="button" id="addButton" 	class="button">추가하기</button>
+		    <div class="form-row">
+		        <label for="year">년도:</label>
+		        <input type="text" id="year" name="year" value="<c:out value='${year}'/>" readonly>
+		        <label for="month">월:</label>
+		        <input type="text" id="month" name="month" value="<c:out value='${month}'/>" readonly>
+		        <label for="days">일:</label>
+		        <input type="text" id="days" name="days" required>
+		        <label for="content">내용:</label>
+		        <input type="text" id="content" name="content" required>
+		        <label for="income">수입:</label>
+		        <input type="text" id="income" name="income" required value="0">
+		        <label for="spending">지출:</label>
+		        <input type="text" id="spending" name="spending" required value="0">
+		        <label for="balance">잔액:</label>
+		        <input type="text" id="balance" name="balance" required value="0">
+		    </div>
+		</form>
+	</c:if>
 	<div id="testJSPAppend">
 	</div>
 
@@ -234,51 +208,6 @@
 	    		}
 	    	});
 	    	addEventDays(document.getElementById('days'));
-    	} else if (gubun === 'U') {
-    		// 가계부 업데이이트 용. 스크립트
-    		const accountForm = document.querySelector('#accountForm');
-    		
-    		accountForm.addEventListener('submit', e => {
-    			e.preventDefault();
-    			
-    			if (accountForm.checkValidity()) {
-    				const formData = new FormData(e.target);
-    				//console.log('formData', formData);
-    				const formObj = {};
-    				formData.forEach((value, key) => {
-    					// 중복된 key가 있는지 확인.
-    					if (formObj[key]) {
-    						formObj[key] += ', ' + value;
-    					} else {
-    						// 처음 저장하는 경우.
-    						formObj[key] = value;
-    					}
-    				});
-    				//console.log('formObj', formObj);
-    				const jsonStr = JSON.stringify(formObj);
-    				
-    				fetch('updateAccout.do',{
-    					method : 'POST'
-    					, header : {
-    						'Content-Type': 'application/json'
-    					}
-    					, body : jsonStr
-    				}).then(response => {
-    					if (!response.ok) throw new Error('Network response was not ok ' + response.statusText);
-    					return response.json();
-    					//return response.text();
-    				}).then(data => {
-    					console.log('data', data);
-    					//document.querySelector('#testJSPAppend').innerHTML = data; // 문자열의 경우는 innerHTML쓴다. 공부하기좋은.
-    					
-    				}).catch(error => {
-					  	alert('There was a problem with the fetch operation: '+error);
-				  	});
-    			} else {
-    				alert('수정하려는 항목들을 확인해 주세요!');
-    			}
-    		});
-	    	addEventDays(document.querySelectorAll('input[name="days"]'));
     	}
     });
     
@@ -298,11 +227,19 @@
 	    		}
 	    		
 	   			// 날짜 days 최대 일수
-	    		if (Number(e.target.value) > 31) {
-	    			alert('31을 넘게 입력할 수 없습니다.');
-	    			e.target.value = e.target.value.substring(0, 1);
-	    			return false;
-	    		}
+				if (modelMonth !== '2') {
+		    		if (Number(e.target.value) > 31) {
+		    			alert('31을 넘게 입력할 수 없습니다.');
+		    			e.target.value = e.target.value.substring(0, 1);
+		    			return false;
+		    		}
+				} else {
+					if (Number(e.target.value) > 28) {
+		    			alert('28을 넘게 입력할 수 없습니다.');
+		    			e.target.value = e.target.value.substring(0, 1);
+		    			return false;
+		    		}
+				}
 	    	});
     	} else if (gubun === 'U') {
     		inputElement.forEach((item, idx) => {
