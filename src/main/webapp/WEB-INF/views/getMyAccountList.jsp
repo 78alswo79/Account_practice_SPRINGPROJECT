@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
@@ -265,7 +264,7 @@
 				} else {
 					//공부하기 좋은, array.join(',') : 배열의 요소를 쉼표로 구분하여 하나이 문자열로 만든다.
 					//window.location.href = 'addAccount.do?seqArray=' + seqArray.join(',') + '&gubun=U&year=' + ${year} + '&month=' + ${month};
-					fetch('updateAccout.do', {
+					fetch('/api/updateAccout.do', {
 						method : "POST"
 						, headers : {'Content-Type' : 'application/json' }
 						, body : JSON.stringify(param)
@@ -307,7 +306,7 @@
 			if (resCheckedLength > 0) {				
 				<%-- 공부하기 좋은, array.join(',') : 배열의 요소를 쉼표로 구분하여 하나이 문자열로 만든다.--%>
 				//window.location.href = 'addAccount.do?seqArray=' + seqArray.join(',') + '&gubun=U&year=' + ${year} + '&month=' + ${month};
-				fetch('deleteAccount.do', {
+				fetch('/api/deleteAccount.do', {
 					method : 'POST'
 					, header : { 'Content-Type' : 'application/json' }
 					, body : seqArray.join(',')

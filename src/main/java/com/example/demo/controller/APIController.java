@@ -73,7 +73,7 @@ public class APIController {
 			resP.sendRedirect("/index.do");
             //return response;
 		} else {
-			resP.sendRedirect("/login.do");
+			resP.sendRedirect("/login/loginForm.do");
 		}
 	}
 	
