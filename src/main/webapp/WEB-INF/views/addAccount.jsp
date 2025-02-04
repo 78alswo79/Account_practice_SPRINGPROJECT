@@ -44,7 +44,7 @@
 	<!-- 데이터 입력을 위한 폼 -->
 	<c:choose>
 		<c:when test="${gubun eq 'C'}">
-			<form id="accountForm" action="insertAccout.do" method="post">
+			<form id="accountForm" action="/api/insertAccout.do" method="post">
 			    <button type="submit" id="submit"		class="button" >입력</button>
 			    <button type="button" id="addButton" 	class="button">추가하기</button>
 			    <div class="form-row">
@@ -205,7 +205,7 @@
 		   	        console.log(jsonString); // JSON 문자열 출력
 		   			
 		   			
-		   			fetch('/insertAccout.do', {
+		   			fetch('/api/insertAccout.do', {
 						method: 'POST'
 						, headers: {
 					        'Content-Type': 'application/json'
