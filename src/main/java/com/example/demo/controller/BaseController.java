@@ -19,9 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.dto.PageVO;
 import com.example.demo.dto.Test;
 import com.example.demo.service.AccountService;
+import com.example.demo.util.CookieUtil;
 import com.example.demo.util.CustomException;
 import com.example.demo.util.JwtUtilClass;
 
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -33,6 +36,9 @@ public class BaseController {
 	
 	@Autowired
 	private AccountService accoutService;
+	
+	@Autowired
+	private CookieUtil cookieUtil;
 	
 	// application.properties에 정의된 값을 가져올 때. 공부하기 좋은.
 	@Value("${spring.datasource.url}")
@@ -73,12 +79,16 @@ public class BaseController {
 			, @RequestParam(required = false, defaultValue = "0") int currentPage
 			, @RequestParam(required = false/* , defaultValue = "" */) String filterOption
 			, @RequestParam(required = false/* , defaultValue = "15" */) Integer perPage
-			, HttpSession session) {
+			, HttpSession session
+			, HttpServletRequest req) {
 		
 		ModelAndView mav = new ModelAndView();
+		List<Test> testList = new ArrayList<>();
+		PageVO pageVO;
+		Test test = new Test();
 		// 공부하기 좋은.
-		// 방법 1. 예외처리 할 때,
-		// 방법 2. 리다이렉트
+		// 방법 1. 예외처리를 하거나
+		// 방법 2. 리다이렉트로 처리한다.
 		// 얘는 결국 주석처리 한다.
 //		if (session.getAttribute("user") == null) { 
 //			// throw new CustomException("검증된 유저가 아닙니다. 접근이 안됩니다."); 
@@ -86,39 +96,39 @@ public class BaseController {
 //			return mav;
 //		}
 		
-		// TODO jwt토큰으로 유효성음 검증하는 소스를 만들어보자.
-		
-		List<Test> testList = new ArrayList<>();
-		PageVO pageVO;
-		
-		
-		mav.setViewName("getMyAccountList");
-		Test test = new Test();
-		
-		test = accoutService.setDateYearMonth(year, month);
-
-		
-		// 첫 리스트 진입 시. 현재 페이지 넘버 세팅
-		if (currentPage == 0) {
-			currentPage = 1;
+		String token = cookieUtil.getJwtFromCookie(req);
+		if (token.isBlank()) {
+			mav.setViewName("redirect:/login/loginForm.do");
+			return mav;
 		}
-		
-		// 첫 진입 시, 필터옵션 값 세팅. == content 필드를 의미한다.
-		if (filterOption == null) {
-			filterOption = "";
-		}
-		
-		// 첫 진입 시, 15로 세팅.
-		if (perPage == null) {
-			perPage = 15;
-		}
-		
-		
-		int totalListCnt = accoutService.getTotalListCnt(test);
-		pageVO = new PageVO(currentPage, perPage, totalListCnt);
-		//화면에 쁘려준다.
-		testList = accoutService.getMyAccountList(test, pageVO, filterOption);
-		
+		// Jwt 토큰으로 유효성음 검증.
+		Claims claims = jwtUtil.validateToken(token);
+		if (!claims.isEmpty()) {
+			
+			mav.setViewName("getMyAccountList");
+			test = accoutService.setDateYearMonth(year, month);
+			
+			// 첫 리스트 진입 시. 현재 페이지 넘버 세팅
+			if (currentPage == 0) {
+				currentPage = 1;
+			}
+			
+			// 첫 진입 시, 필터옵션 값 세팅. == content 필드를 의미한다.
+			if (filterOption == null) {
+				filterOption = "";
+			}
+			
+			// 첫 진입 시, 15로 세팅.
+			if (perPage == null) {
+				perPage = 15;
+			}
+			
+			
+			int totalListCnt = accoutService.getTotalListCnt(test);
+			pageVO = new PageVO(currentPage, perPage, totalListCnt);
+			//화면에 쁘려준다.
+			testList = accoutService.getMyAccountList(test, pageVO, filterOption);
+			
 //		System.out.println("totalListCnt" + totalListCnt);
 //		System.out.println("currentPage" + currentPage);
 //		System.out.println("perPage" + perPage);
@@ -126,45 +136,56 @@ public class BaseController {
 //		System.out.println("페이징 추가한 testList" + testList);
 //		System.out.println("페이징 표시할 총 페이지 수" + pageVO.getTotalPages());
 //		System.out.println("pageVO" + pageVO);
-		
-		
-		// 필터 옵션(== 콘탠트)
-		List<String> getContentList = accoutService.getFilterList(test);
-		
-		if (testList != null && !testList.isEmpty()) {			
-			// 이 화면에는 가계부를 적을 수 있는 기능이있다.
-			mav.addObject("testList", testList);
-			mav.addObject("getContentList", getContentList);
-			mav.addObject("pageVO", pageVO);
-		} else {
-			mav.addObject("testList", "");
+			
+			// 필터 옵션(== 콘탠트)
+			List<String> getContentList = accoutService.getFilterList(test);
+			
+			if (testList != null && !testList.isEmpty()) {			
+				// 이 화면에는 가계부를 적을 수 있는 기능이있다.
+				mav.addObject("testList", testList);
+				mav.addObject("getContentList", getContentList);
+				mav.addObject("pageVO", pageVO);
+			} else {
+				mav.addObject("testList", "");
+			}
+			
+			mav.addObject("year", year);
+			mav.addObject("month", month);	
 		}
-		
-		mav.addObject("year", year);
-		mav.addObject("month", month);	
-
 		return mav;
 	}
 	
 	@RequestMapping(value = "/addAccount.do" , method = { RequestMethod.GET, RequestMethod.POST}) // @RequestMapping 옵션값 공부.
 	public ModelAndView addAccount(@RequestParam String year, @RequestParam String month
-									, @RequestParam String gubun, @RequestParam (required = false) String seqArray) {
+									, @RequestParam String gubun
+									, @RequestParam (required = false) String seqArray
+									, HttpServletRequest req) {
 		
 		ModelAndView mav = new ModelAndView();
-
-		if (gubun == "") {
-			// 적절한 예외 처리
-		    throw new CustomException("gubun, year, month or AccountService cannot be null");
-		}
 		
-		// C, 인서트 작업.
-		if (gubun.equalsIgnoreCase("C")) {
-			mav.setViewName("addAccount");
-			mav.addObject("year", year);
-			mav.addObject("month", month);
-			
-			mav.addObject("gubun", gubun);
+		// Jwt유횽성 검증로직.
+		String token = cookieUtil.getJwtFromCookie(req);
+		if (token.isBlank()) {
+			mav.setViewName("redirect:/login/loginForm.do");
+			return mav;
 		}
+		// Jwt 토큰으로 유효성음 검증.
+		Claims claims = jwtUtil.validateToken(token);
+		if (!claims.isEmpty()) {
+			if (gubun == "") {
+				// 적절한 예외 처리
+				throw new CustomException("gubun, year, month or AccountService cannot be null");
+			}
+			
+			// C, 인서트 작업.
+			if (gubun.equalsIgnoreCase("C")) {
+				mav.setViewName("addAccount");
+				mav.addObject("year", year);
+				mav.addObject("month", month);
+				mav.addObject("gubun", gubun);
+			}
+		}
+
 		return mav;
 	}
 }

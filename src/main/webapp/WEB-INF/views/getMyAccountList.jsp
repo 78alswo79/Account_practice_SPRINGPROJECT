@@ -282,7 +282,7 @@
 						alert('어떠한 이유로 서버와의 통신이 실패했습니다.' + error);
 					}).finally(() => {
 						// 무조건 실행되어야 할 로직 써주면 됨.
-						window.location.href = 'getMyAccountList.do?year=' + year + '&month=' + month;
+						window.location.href = 'getMyAccountList.do?year=' + year + '&month=' + Number(month);
 					})
 				}
 
@@ -446,9 +446,11 @@
 			.then(response => {
 				if (!response.ok) throw new Error ('Network communication Error!!!' + response.status);
 				return response.json();
+				
 			})
 			.then(data => {
 				console.log('data', data);
+				if (data.responseUrl) return window.location.href = data.responseUrl;
 				const responseAppend = document.querySelector('#responseAppend');
 				
                 if (data.resCode === 200) {                	
@@ -560,7 +562,7 @@
 		if ('${testList}' != '') {
 			const confirmBool = confirm('정말 다운을 받으시겠습니까??');
 			if (confirmBool) {
-				const baseURL = '/excelDown.do';
+				const baseURL = 'api/excelDown.do';
 				const params = new URLSearchParams({
 					year : resYear
 					, month : resMonth
@@ -574,7 +576,8 @@
 			        }
 				}).then(response => {
 					if (!response.ok) throw new Error('Communication Response Error!!' + response.statusText);
-					return response.blob();
+					if (!response.redirected) return response.blob();
+					if (response.redirected) return window.location.href = response.url;
 				}).then(blobData => {
 					const url = window.URL.createObjectURL(blobData); // Blob URL 생성
 			        const a = document.createElement('a'); // 링크 요소 생성

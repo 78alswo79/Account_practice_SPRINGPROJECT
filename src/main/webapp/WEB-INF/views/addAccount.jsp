@@ -186,10 +186,11 @@
 					    } 
 		   				, body : jsonString
 					  }).then(response => {
-				  			if (!response.ok) throw new Error('Network response was not ok ' + response.statusText);
-					  		// json으로 꼭 받아야 하는구나...
+				  			if (!response.ok) throw new Error('Network response was not ok ' + response.statusText);	
 					  		return response.json();
 					  }).then(data => {
+							// data.responseUrl이 undefined일 경우가 있다. 공부하기 좋은
+							if (data.responseUrl) return window.location.href = data.responseUrl;
 				 	  		// 가계부 입력이 정상적으로 됨. 200코드
 				 	  		if (data.resCode === 200) {
 				 	  			alert(data.returnMessage);
