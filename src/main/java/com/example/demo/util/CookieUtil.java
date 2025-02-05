@@ -3,6 +3,7 @@ package com.example.demo.util;
 import org.springframework.stereotype.Component;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class CookieUtil {
@@ -15,5 +16,22 @@ public class CookieUtil {
 		cookie.setMaxAge(86400); 			// 쿠키의 유효 기간 (초)
 		
 		return cookie;
+	}
+	
+	public String getJwtFromCookie(HttpServletRequest req) {
+		Cookie[] cookies = req.getCookies();
+		String res = "";
+		
+		if (cookies == null) return res = "";
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equalsIgnoreCase("jwt")) {
+					res = cookie.getValue();
+					break;
+				}
+			}
+		} 
+		return res;
+		
 	}
 }
