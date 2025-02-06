@@ -259,7 +259,7 @@
 			// array객체. 유효성 체크 방법. 공부하기 좋은.
 			if (param.length > 0 && Array.isArray(param)) {
 				if (param.length > 10) {
-					alert('업데이트는 10개행을 할 수 없습니다.!');
+					alert('업데이트는 10개행 이상을 할 수 없습니다.!');
 					return false;
 				} else {
 					//공부하기 좋은, array.join(',') : 배열의 요소를 쉼표로 구분하여 하나이 문자열로 만든다.
@@ -273,16 +273,18 @@
 	
 						return response.json();
 					}).then(data => {
+						if (data.responseUrl) return window.location.href = data.responseUrl;		// 리다이렉트가 발생하면 자바스크립트 컨텍스트는 종료된다. 공부하기 좋은
 						if (data.resCode === '200') {
 							alert(data.resMessage);
 						} else {
 							alert(data.resMessage);
 						}
+						// 무조건 실행되어야 할 로직 써주면 됨.
+						window.location.href = 'getMyAccountList.do?year=' + year + '&month=' + Number(month);
 					}).catch(error => {
 						alert('어떠한 이유로 서버와의 통신이 실패했습니다.' + error);
 					}).finally(() => {
-						// 무조건 실행되어야 할 로직 써주면 됨.
-						window.location.href = 'getMyAccountList.do?year=' + year + '&month=' + Number(month);
+						// finally() 블록은 promise의 결과 상관없이, 무조건 실행된다. 공부하기 좋은
 					})
 				}
 
@@ -314,6 +316,7 @@
 					if (!response.ok) throw new Error ('Network response was not ok ' + response.statusText);
 					return response.json();
 				}).then(data => {
+					if (data.responseUrl) return window.location.href = data.responseUrl;
 					if (data.resCode === '200') {
 						alert(data.resMessage);
 						window.location.href = '/getMyAccountList.do?year=' + ${year} + '&month=' + ${month};
