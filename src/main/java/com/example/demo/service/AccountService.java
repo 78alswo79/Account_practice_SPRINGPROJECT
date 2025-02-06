@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,10 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.PageVO;
 import com.example.demo.dto.Test;
 import com.example.demo.mapper.TestMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 @Service
@@ -256,6 +261,18 @@ public class AccountService {
 	// 상수 Enum활용.
 	private enum getHeaderNameList {
 		YEAR, MONTH, DAYS, CONTENT, INCOME, SPENDING, BALANCE
+	}
+
+	/**
+	 * <p>로그인이 완료했으면, 전 화면으로 다이렉트하는 메소드</p>
+	 * @author kephas_LEEMINJAE
+	 * @param HttpServletRequest
+	 * @param HttpServletResponse
+	 * @return void
+	 * */
+	public void handleRedirect(HttpServletRequest request, HttpServletResponse resP) throws IOException {
+		HttpSession session = request.getSession();	
+		resP.sendRedirect(session.getAttribute("redirectUrl") +"?"+ session.getAttribute("param"));
 	}
 	
 }

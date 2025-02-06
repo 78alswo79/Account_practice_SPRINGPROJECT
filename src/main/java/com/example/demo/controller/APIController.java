@@ -64,10 +64,6 @@ public class APIController {
 			throw new CustomException("user is not NUll!!!");
 		}
 		
-		//String userName = user.get("userName").toString();
-		//String password = user.get("password").toString();
-		System.out.println("userTest" + userTest);
-		System.out.println("사용자 정보 입력하고 진입!!");
 		// 사용자 인증 로직
 		if (userTest.containsKey(username) && userTest.get(username).equals(password)) {
 			String token = jwtUtil.generateToken(username);
@@ -76,7 +72,8 @@ public class APIController {
 			
 			if (!token.isBlank()) {
 				resP.addCookie(cookieUtil.createCookies(token));
-				resP.sendRedirect("/index.do");
+				
+				accoutService.handleRedirect(request, resP);
 				
 				// user 세션 여기에서 첫 생성.
 				session.setAttribute("user", username);
