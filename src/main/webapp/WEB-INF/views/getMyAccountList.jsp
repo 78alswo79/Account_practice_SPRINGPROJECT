@@ -88,8 +88,8 @@
     <!-- 가계부 작성하기 버튼 -->
     <div class="button-container">
     	<a href="#" class="button exceldown">액셀 내려받기</a>
-        <a href="addAccount.do?gubun=C&year=${year}&month=${month}" class="button add">가계부 작성하기</a>
-        <a href="#"<%-- href="addAccount.do?gubun=U&year=${year}&month=${month}" --%> class="button update">가계부 수정하기</a>
+        <a href="addAccount.do?year=${year}&month=${month}" class="button add">가계부 작성하기</a>
+        <a href="#" class="button update">가계부 수정하기</a>
         <a href="deleteAccount.do?year=${year}&month=${month}" class="button delete">가계부 삭제하기</a>
     </div>
 
@@ -186,8 +186,8 @@
     
     
     <div class="button-container">
-        <a href="addAccount.do?gubun=C&year=${year}&month=${month}" class="button add">가계부 작성하기</a>
-        <a href="#"<%-- href="addAccount.do?gubun=U&year=${year}&month=${month}" --%> class="button update">가계부 수정하기</a>
+        <a href="addAccount.do?year=${year}&month=${month}" class="button add">가계부 작성하기</a>
+        <a href="#" class="button update">가계부 수정하기</a>
         <a href="deleteAccount.do?year=${year}&month=${month}" class="button delete">가계부 삭제하기</a>
     </div>
 

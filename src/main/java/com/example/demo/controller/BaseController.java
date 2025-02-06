@@ -157,7 +157,6 @@ public class BaseController {
 	
 	@RequestMapping(value = "/addAccount.do" , method = { RequestMethod.GET, RequestMethod.POST}) // @RequestMapping 옵션값 공부.
 	public ModelAndView addAccount(@RequestParam String year, @RequestParam String month
-									, @RequestParam String gubun
 									, @RequestParam (required = false) String seqArray
 									, HttpServletRequest req) {
 		
@@ -172,18 +171,9 @@ public class BaseController {
 		// Jwt 토큰으로 유효성음 검증.
 		Claims claims = jwtUtil.validateToken(token);
 		if (!claims.isEmpty()) {
-			if (gubun == "") {
-				// 적절한 예외 처리
-				throw new CustomException("gubun, year, month or AccountService cannot be null");
-			}
-			
-			// C, 인서트 작업.
-			if (gubun.equalsIgnoreCase("C")) {
-				mav.setViewName("addAccount");
-				mav.addObject("year", year);
-				mav.addObject("month", month);
-				mav.addObject("gubun", gubun);
-			}
+			mav.setViewName("addAccount");
+			mav.addObject("year", year);
+			mav.addObject("month", month);
 		}
 
 		return mav;
