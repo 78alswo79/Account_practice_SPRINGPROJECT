@@ -76,9 +76,5 @@ public class MyInterceptor implements HandlerInterceptor{
 					session.setAttribute("param", "year=".concat(request.getParameter("year")).concat("&month=").concat(request.getParameter("month")));
 				break;
 		}
-		
-		System.out.println("세션 저장된 정보>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + session.getAttribute("redirectUrl"));
-		System.out.println("세션 저장된 정보>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + session.getAttribute("param"));
 	}
-	
 }
