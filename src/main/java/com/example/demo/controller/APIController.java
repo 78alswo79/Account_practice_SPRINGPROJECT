@@ -84,6 +84,14 @@ public class APIController {
 		}
 	}
 	
+	@GetMapping("/logoutProcess.do")
+	public void login(HttpServletRequest request, HttpServletResponse response
+			, HttpSession session) throws IOException {
+
+		cookieUtil.removeJwtCookie(request, response);
+		response.sendRedirect("/login/loginForm.do");
+	}
+	
 	@GetMapping(value="/getFilteredList.do")
 	public ResponseEntity<Map<String, Object>> getFilteredList(@RequestParam String year, @RequestParam String month
 			, @RequestParam(required = false, defaultValue = "0") int currentPage
