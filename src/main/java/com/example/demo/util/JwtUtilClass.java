@@ -4,17 +4,35 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtUtilClass {
+	@Autowired
+	CookieUtil cookieUtil;
 	private final String SECRET_KEY = "my_Hekireky_key";
 	private final long EXPIRE_TIME = 1000 * 60 * 60;		// 기본 1시간
+	
+	// 클라이언트 소스에 영향을 적게 주는 느슨한 개발방법. 공부하기 좋은
+	// 클라이언트 소스에 영향을 적게 미치는 방법 1.
+	// 1. setter 인젝션. DI
+	private final HttpServletRequest request;
+	private final HttpServletResponse response;
+	
+    public JwtUtilClass(HttpServletRequest request, HttpServletResponse response) {
+        this.request = request;
+        this.response = response;
+    }
+	
 	
 	/**
 	 * <p>jwt 토큰에 필요한 데이터 추가 가공 메소드.<br>
@@ -67,6 +85,8 @@ public class JwtUtilClass {
 			// JWT 만료 시간 검증
 			// 공부하기 좋은
 			if (isJwtExpiration(claims)) {
+				// jwt 만료시, 삭제.
+				cookieUtil.removeJwtCookie(request, response);
 				throw new CustomException("JWT token is expired");
 			}
 			
@@ -74,6 +94,41 @@ public class JwtUtilClass {
 		} catch (SignatureException e) {
 			// TODO: handle exception
 			throw new CustomException("invalid JWT signature!!");
+		} catch (ExpiredJwtException e) {
+			// jwt 만료시, 삭제.
+			cookieUtil.removeJwtCookie(request, response);
+			throw new CustomException(e.getMessage());
+		} catch (Exception e) {
+			throw new CustomException(e.getMessage());
+		}
+	}
+	
+	// 클라이언트 소스에 영향을 적게 미치는 방법 2.
+	// 2. 오버라이딩 메소드.
+	public Claims validateToken(String token, HttpServletResponse response) {
+		try {
+			// 공부하기좋은
+			Claims claims = Jwts.parser()					// jwt 파싱
+					.setSigningKey(SECRET_KEY)				// 생설할 때 만든 key로 무결성을 확인한다.
+					.parseClaimsJws(token)					// 주어진 문자열을 파싱하고, 서명을 검증. 유효하다면 Jws<Claims>를 반환한다.
+					.getBody();								// Jws<Claims>객체에서 클레임부분을 추출한다.
+			
+			// JWT 만료 시간 검증
+			// 공부하기 좋은
+			if (isJwtExpiration(claims)) {
+				// jwt 만료시, 삭제.
+				cookieUtil.removeJwtCookie(request, response);
+				throw new CustomException("JWT token is expired");
+			}
+			
+			return claims;
+		} catch (SignatureException e) {
+			// TODO: handle exception
+			throw new CustomException("invalid JWT signature!!");
+		} catch (ExpiredJwtException e) {
+			// jwt 만료시, 삭제.
+			cookieUtil.removeJwtCookie(request, response);
+			throw new CustomException(e.getMessage());
 		} catch (Exception e) {
 			throw new CustomException(e.getMessage());
 		}
