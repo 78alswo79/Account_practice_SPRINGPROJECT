@@ -87,6 +87,9 @@
     
     <!-- 가계부 작성하기 버튼 -->
     <div class="button-container">
+    	<form action="/api/uploadExcelFile" method="post" enctype="multipart/form-data" class="fileUploadForm">
+    		<input type="file" name="file"/><button type="submit">업로드</button>
+    	</form>
     	<a href="#" class="button exceldown">액셀 내려받기</a>
         <a href="addAccount.do?year=${year}&month=${month}" class="button add">가계부 작성하기</a>
         <a href="#" class="button update">가계부 수정하기</a>
@@ -186,6 +189,10 @@
     
     
     <div class="button-container">
+    	<form action="/api/uploadExcelFile" method="post" enctype="multipart/form-data" class="fileUploadForm">
+    		<input type="file" name="file"/><button type="submit">업로드</button>
+    	</form>
+    	<form action="/api/uploadExcelFile" method="post" enctype="multipart/form-data"></form>
         <a href="addAccount.do?year=${year}&month=${month}" class="button add">가계부 작성하기</a>
         <a href="#" class="button update">가계부 수정하기</a>
         <a href="deleteAccount.do?year=${year}&month=${month}" class="button delete">가계부 삭제하기</a>
@@ -508,7 +515,6 @@
 
 	const intersectOb = new IntersectionObserver(callback, {threshold : 0.7});
 	//intersectOb.observe(responseAppend);			// 옵저버 최초 호출.
-	
 	const getAPIList = () => {
 		const baseURL = 'api/getFilteredList.do';
 		const params = new URLSearchParams({
@@ -608,6 +614,25 @@
 		});
 		return seqArray.length;
 	}
+	
+	// 파일업로드 이벤트
+	/* const fileUploadForm = document.querySelectorAll(".fileUploadForm");
+	const fileUploadURL = "/api/uploadExcelFile";
+	fileUploadForm.forEach((item, idx) => {
+		item.addEventListener('submit', e => {
+			e.preventDefault();
+			console.log('연결 확인.');
+			
+			fetch(fileUploadURL, {
+				method : "post"
+			}).then(response => {
+				if (!response.ok) throw new Error('Communication Response Error!!' + response.statusText);
+				return response.json();
+			}).then(data => {
+				console.log('ddd')
+			})
+		});
+	}); */
 	
 </script>
 </html>

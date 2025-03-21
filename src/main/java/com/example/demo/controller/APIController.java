@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,11 +21,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dto.PageVO;
 import com.example.demo.dto.Test;
 import com.example.demo.service.AccountService;
+import com.example.demo.service.ExcellService;
 import com.example.demo.util.CookieUtil;
 import com.example.demo.util.CustomException;
 import com.example.demo.util.JwtUtilClass;
@@ -45,6 +48,9 @@ public class APIController {
 	JwtUtilClass jwtUtil;
 	@Autowired
 	CookieUtil cookieUtil;
+	@Autowired
+	ExcellService excellService;
+	
 	// 임시. 사용자 데이터
 	// map 선언과 동시에 초기화. 공부하기 좋은.
 	private Map<String, Object> userTest = new HashMap<>() {{
@@ -348,5 +354,24 @@ public class APIController {
 	}
 	
 	//TODO 액셀 업로드 구현. 시험적으로. 내용 구상은 아직해놓지 않았다.
-	//TODO JWT토큰 사용자 인증 컨트롤러 만들기.
+	
+	@PostMapping("/uploadExcelFile")
+	public String uploadExcelFile(MultipartFile file, ModelAndView mav) throws IOException {
+		// TODO 이어서
+		String result = "";
+		
+		try {
+			excellService.saveFile(file);
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw new CustomException("fileUpload is failure!!");
+		}
+		
+		
+			
+		
+		
+		return result;
+		
+	}
 }
