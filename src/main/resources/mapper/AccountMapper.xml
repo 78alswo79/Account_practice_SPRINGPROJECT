@@ -5,7 +5,7 @@
 		SELECT
 			 * 
 		FROM 
-			TESTTABLE
+			MASTER_ACCOUNT
 	</select>
 
 	<!-- Map<>안에 두 DTO를 담았다. 바인팅을 할 때, 객체.멤버변수로 접근한다. 공부하기 좋은. -->
@@ -20,7 +20,7 @@
 			, SPENDING
 			, BALANCE
 		FROM 
-			TESTTABLE
+			MASTER_ACCOUNT
 		WHERE
 			YEAR = #{test.year}
 		AND
@@ -39,7 +39,7 @@
 	</select>
 	
 	<insert id="insertAccountList">
-		INSERT INTO TESTTABLE (SEQ, YEAR, MONTH, DAYS, CONTENT, INCOME, SPENDING, BALANCE) 
+		INSERT INTO MASTER_ACCOUNT (SEQ, YEAR, MONTH, DAYS, CONTENT, INCOME, SPENDING, BALANCE) 
 		VALUES
 		<!-- mybatis forEach문 공부. -->
 		<foreach item="item" collection="getList" separator=",">
@@ -51,14 +51,14 @@
 		SELECT
 			MAX(SEQ)
 		FROM
-			TESTTABLE
+			MASTER_ACCOUNT
 	</select>
 	
 	<select id="getUpdateMyAccountList" resultType="com.example.demo.dto.Test">
 		SELECT
 			 * 
 		FROM 
-			TESTTABLE
+			MASTER_ACCOUNT
 		WHERE
 			YEAR = #{year}
 		AND
@@ -77,7 +77,7 @@
 			 YEAR
 			 , MONTH 
 		FROM 
-			TESTTABLE
+			MASTER_ACCOUNT
 		WHERE
 			YEAR = #{year}
 		AND
@@ -87,7 +87,7 @@
 	<delete id="delete">
 		DELETE 
 		FROM
-			TESTTABLE
+			MASTER_ACCOUNT
 		WHERE
 			SEQ IN
 			<foreach collection="seqArr" item="seqArr" open="(" separator="," close=")">
@@ -97,7 +97,7 @@
 	
 	<update id="update">
 		UPDATE 
-			TESTTABLE
+			MASTER_ACCOUNT
 		SET
 			CONTENT = #{content}
 			, INCOME = #{income}
@@ -117,7 +117,7 @@
 		SELECT
 			 DISTINCT CONTENT
 		FROM 
-			TESTTABLE
+			MASTER_ACCOUNT
 		WHERE
 			YEAR = #{year}
 		AND
@@ -128,7 +128,7 @@
 		SELECT
 			 COUNT(*)
 		FROM 
-			TESTTABLE
+			MASTER_ACCOUNT
 		WHERE
 			YEAR = #{year}
 		AND
@@ -146,7 +146,7 @@
 			, SPENDING
 			, BALANCE
 		FROM 
-			TESTTABLE
+			MASTER_ACCOUNT
 		WHERE
 			YEAR = #{test.year}
 		AND
