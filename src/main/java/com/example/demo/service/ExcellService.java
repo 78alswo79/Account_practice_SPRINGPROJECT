@@ -57,7 +57,10 @@ public class ExcellService {
 	                String income = incomeCell == null ? "0" : incomeCell.getStringCellValue();
 	                String spending = spendingCell == null ? "0" : spendingCell.getStringCellValue();
 	                String balance = balanceCell == null ? "0" : balanceCell.getStringCellValue();
-	          
+	                
+	                //TODO 액셀Cell의 데이터 타입에 따라서 분기처리하여 값 세팅.
+	                //TODO DB저장
+	                //TODO 이외에 액셀 다운로드 액셀 서비스분리하기
 	                // 데이터베이스에 저장하는 로직 추가
 	                System.out.println("Value 1: " + accountDate + ", Value 2: " + content + "Value 3: " + income + "Value 4: " + spending + "Value 5: " + balance);
 				}
