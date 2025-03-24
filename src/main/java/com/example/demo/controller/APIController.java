@@ -353,8 +353,7 @@ public class APIController {
 		return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
 	}
 	
-	//TODO 액셀 업로드 구현. 시험적으로. 내용 구상은 아직해놓지 않았다.
-	
+	//TODO 액셀 업로드 구현. 시험적으로. 
 	@PostMapping("/uploadExcelFile")
 	public String uploadExcelFile(MultipartFile file, ModelAndView mav) throws IOException {
 		// TODO 이어서
@@ -362,15 +361,17 @@ public class APIController {
 		
 		try {
 			excellService.saveFile(file);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			throw new CustomException("uploaded file is parsing NullPointer Error");
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 			throw new CustomException("fileUpload is failure!!");
 		}
 		
 		
-			
-		
-		
+		// TODO getMyList로 리다이렉트처리
+		// TODO 업로드 성곻했으면, 메시지하나 뿌려주기.
 		return result;
 		
 	}
