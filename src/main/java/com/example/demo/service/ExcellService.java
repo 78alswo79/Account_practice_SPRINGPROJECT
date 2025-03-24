@@ -40,26 +40,38 @@ public class ExcellService {
 				//else if (file.getOriginalFilename().endsWith("csv")) {
 				//}
 				
-	
 				Sheet sheet = workbook.getSheetAt(0);
 				
 				for (Row row : sheet) {
 					// 각 행의 데이터를 읽어오기
-	                Cell cell1 = row.getCell(0); // 첫 번째 열
-	                Cell cell2 = row.getCell(1); // 두 번째 열
+	                Cell accountDateCell = row.getCell(0); 	// 날짜 열
+	                Cell contentCell = row.getCell(1); 		// 내용 열
+	                Cell incomeCell = row.getCell(2); 		// 수입 열
+	                Cell spendingCell = row.getCell(3); 	// 지출 열
+	                Cell balanceCell = row.getCell(4); 		// 잔액 열
 	
 	                // 셀의 값을 가져오기
-	                String value1 = cell1.getStringCellValue();
-	                String value2 = cell2.getStringCellValue();	// 참조하는 값이 null경우 NullPointerEx발생!!
-	
+	                // 참조하는 값이 null경우 NullPointerEx발생!!
+	                String accountDate = accountDateCell == null ? "9999-99-99" : accountDateCell.getStringCellValue();
+	                String content = contentCell == null ? "N/A" : contentCell.getStringCellValue();					
+	                String income = incomeCell == null ? "0" : incomeCell.getStringCellValue();
+	                String spending = spendingCell == null ? "0" : spendingCell.getStringCellValue();
+	                String balance = balanceCell == null ? "0" : balanceCell.getStringCellValue();
+	          
 	                // 데이터베이스에 저장하는 로직 추가
-	                System.out.println("Value 1: " + value1 + ", Value 2: " + value2);
+	                System.out.println("Value 1: " + accountDate + ", Value 2: " + content + "Value 3: " + income + "Value 4: " + spending + "Value 5: " + balance);
 				}
 			
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			throw new CustomException("uploaded file is parsing NullPointer Error");
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			throw new CustomException("uploaded file is parsing excute Error!!");
+		} finally {
+			// workbook객체 닫아주기
+			workbook.close();			
 		}
+		
 	}
 }
