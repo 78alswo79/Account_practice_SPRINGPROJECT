@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dto.PageVO;
 import com.example.demo.dto.Test;
@@ -355,12 +356,13 @@ public class APIController {
 	
 	//TODO 액셀 업로드 구현. 시험적으로. 
 	@PostMapping("/uploadExcelFile")
-	public String uploadExcelFile(MultipartFile file, ModelAndView mav) throws IOException {
-		// TODO 이어서
+	public String uploadExcelFile(MultipartFile file, ModelAndView mav, RedirectAttributes redirectAttributes) throws IOException {
 		String result = "";
 		
 		try {
-			excellService.saveFile(file);
+			excellService.saveFile(file, redirectAttributes);
+			System.out.println("리턴되고 다시 여기로 들어오나??");
+			System.out.println(">>>리다이렉트에 저장된 값은~" + redirectAttributes.getAttribute("resultMessage"));
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new CustomException("uploaded file is parsing NullPointer Error");
@@ -368,7 +370,6 @@ public class APIController {
 			e.printStackTrace();
 			throw new CustomException("fileUpload is failure!!");
 		}
-		
 		
 		// TODO getMyList로 리다이렉트처리
 		// TODO 업로드 성곻했으면, 메시지하나 뿌려주기.
