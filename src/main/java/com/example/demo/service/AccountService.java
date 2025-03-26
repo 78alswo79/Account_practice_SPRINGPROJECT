@@ -136,9 +136,9 @@ public class AccountService {
 		return resMap;
 	}
 
-	public int getSeq(Test entity) {
+	public int getSeq() {
 		int resSeq = 0;
-		Integer seq = testMapper.getSeq(entity);
+		Integer seq = testMapper.getSeq();
 		if (seq == null) {
 			seq = 0;
 		} else {

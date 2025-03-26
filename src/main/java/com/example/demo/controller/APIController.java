@@ -177,7 +177,7 @@ public class APIController {
 				// 적절한 예외 처리
 				throw new CustomException("Entity, Test, or AccountService cannot be null");
 			}	
-			int getSeq = accoutService.getSeq(entity);
+			int getSeq = accoutService.getSeq();
 			entity.setSeq(getSeq);
 			
 			List<Test> getList = accoutService.getTestList(entity);

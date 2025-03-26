@@ -14,7 +14,7 @@ public interface TestMapper {
 
 	int insertAccountList(List<Test> getList);
 
-	Integer getSeq(Test entity);
+	Integer getSeq();
 
 	List<Test> getUpdateMyAccountList(Map<String, Object> paramMap);
 
@@ -29,4 +29,6 @@ public interface TestMapper {
 	int getTotalListCnt(Test test);
 
 	List<Test> getFilteredList(Map<String, Object> map);
+	
+	void insertExcelList(List<Test> list);
 }
