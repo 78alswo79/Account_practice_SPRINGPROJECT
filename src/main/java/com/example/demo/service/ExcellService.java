@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -37,7 +38,6 @@ public class ExcellService {
 		List<Test> resList = new ArrayList<>();
 		// 파일을 서버에 저장
 		File destinationFile = new File(UPLOAD_DIR + file.getOriginalFilename());
-		
 		destinationFile.getParentFile().mkdirs();
 			file.transferTo(destinationFile);
 			
@@ -53,15 +53,13 @@ public class ExcellService {
 				} else {
 					// .csv는 ,로 이어붙인 텍스트형식의 파일이다. csv는 일단 제외하자.
 					// .csv파일 및 이외의 데이터
-					redirectAttributes.addAttribute("resultMessage", "지정된 형식의 액셀 파일이 아닙니다.");
+					redirectAttributes.addFlashAttribute("resultMessage", "지정된 형식의 액셀 파일이 아닙니다.");
 					return;
 				}
 			
-				System.out.println("이 아래는 진행이 디냐??");
 				Sheet sheet = workbook.getSheetAt(0);
 				DataFormatter dataFormatter = new DataFormatter(); // 데이터 포맷터 생성
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-				
 				
 				int getSeq = accountService.getSeq();
 				for(int rowIndex = 2; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
@@ -90,8 +88,8 @@ public class ExcellService {
 	                String spending = (int)spendingCell.getNumericCellValue() + ""; 
 	                String balance = (int)balanceCell.getNumericCellValue() + "";
 	                
-					System.out.println(
-							"seq" + getSeq + "year: " + year + ", month: " + month + "days: " + days +/*"accountDateValue2" + accountDateValue2 +*/ "content: " + content + ", income: " + income + "spending: " + spending + "balance: " + balance);
+//					System.out.println(
+//							"seq" + getSeq + "year: " + year + ", month: " + month + "days: " + days +/*"accountDateValue2" + accountDateValue2 +*/ "content: " + content + ", income: " + income + "spending: " + spending + "balance: " + balance);
 	                
 					test.setSeq(getSeq++);
 					test.setYear(year);
@@ -101,14 +99,11 @@ public class ExcellService {
 	                test.setIncome(income);
 	                test.setSpending(spending);
 	                test.setBalance(balance);
-//	                resList = accountService.getTestList(test);
-	                resList.add(test);
-	                
-	                //TODO 이외에 액셀 다운로드 액셀 서비스분리하기
-	                // 데이터베이스에 저장하는 로직 추가
-//	                System.out.println("Value 1: " + accountDate + ", Value 2: " + content + "Value 3: " + income + "Value 4: " + spending + "Value 5: " + balance);
+
+	                resList.add(test);                
 				}
 				testMapper.insertExcelList(resList);
+					
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new CustomException("uploaded file is parsing NullPointer Error");
@@ -123,37 +118,40 @@ public class ExcellService {
 		}
 	}
 	
-	/**
-	 * <p>액셀 CellType에 따라 값 세팅</p>
-	 * */
-	private void convertCellValue(Cell cell) {
-		switch (cell.getCellType()) {
-		case STRING: 
-			
-			break;
-		case NUMERIC:
-			break;
-		case BOOLEAN:
-			break;
-		case FORMULA:
-			break;
-		case BLANK:
-		 	break;
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + cell.getCellType());
-		}
+	public ByteArrayOutputStream exportToExcel(List<Test> getList) throws IOException {
+		// Workbook 객체 생성
+		Workbook wb = new XSSFWorkbook();
+		Sheet sheet = wb.createSheet(getList.get(0).getYear() + "년 " + getList.get(0).getMonth() + "월");
+		
+		// 헤더 생성
+		Row rowHeader = sheet.createRow(0);
+		for (int i = 0; i < getHeaderNameList.values().length; i++) {
+			rowHeader.createCell(i).setCellValue(getHeaderNameList.values()[i].name());
+		} 
+		
+		// 데이터 추가
+        int rowNum = 1;
+        for (Test test : getList) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(test.getYear());    // 첫 번째 셀
+            row.createCell(1).setCellValue(test.getMonth());   // 두 번째 셀
+            row.createCell(2).setCellValue(test.getDays());    // 세 번째 셀
+            row.createCell(3).setCellValue(test.getContent());  // 네 번째 셀
+            row.createCell(4).setCellValue(test.getIncome());   // 다섯 번째 셀
+            row.createCell(5).setCellValue(test.getSpending()); // 여섯 번째 셀
+            row.createCell(6).setCellValue(test.getBalance());   // 일곱 번째 셀
+        }
+        
+        // 엑셀 파일을 ByteArrayOutputStream에 작성
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        wb.write(outputStream); // workbook 객체를 사용
+        wb.close(); // 리소스 해제
+
+        return outputStream;
 	}
 	
-//	/**
-//	 * <p> **포멧의 year데이터를 ****자로 변환한다. </p>
-//	 * */
-//	private String getYearStrConvert(String rowYear) {
-//		String result = "";
-//		if (99 >= Integer.parseInt(rowYear)) {
-//			result = "20".concat(rowYear);
-//		} else {
-//			result = "21".concat(rowYear);
-//		}
-//		return result;
-//	}
+	// 상수 Enum활용.
+	private enum getHeaderNameList {
+		년, 월, 일, 내용, 수입, 지출, 잔액
+	}
 }

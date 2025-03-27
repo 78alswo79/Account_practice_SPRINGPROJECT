@@ -340,7 +340,7 @@ public class APIController {
 				
 				System.out.println("다운 받을 액셀 리스트는??" + getList);
 				// 다운로드 액셀 구성
-				outputStream = accoutService.exportToExcel(getList);
+				outputStream = excellService.exportToExcel(getList);
 				bytes = outputStream.toByteArray(); 				// 바이트 배열 가져오기
 				headers.add("Content-Disposition", "attachment; filename=test.xlsx");
 			}
@@ -354,15 +354,15 @@ public class APIController {
 		return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
 	}
 	
-	//TODO 액셀 업로드 구현. 시험적으로. 
 	@PostMapping("/uploadExcelFile")
-	public String uploadExcelFile(MultipartFile file, ModelAndView mav, RedirectAttributes redirectAttributes) throws IOException {
-		String result = "";
-		
+	public ModelAndView uploadExcelFile(MultipartFile file, RedirectAttributes redirectAttributes
+				, @RequestParam String year
+				, @RequestParam String month
+				, HttpServletResponse response) throws IOException {
+		ModelAndView mav = new ModelAndView();
 		try {
+			
 			excellService.saveFile(file, redirectAttributes);
-			System.out.println("리턴되고 다시 여기로 들어오나??");
-			System.out.println(">>>리다이렉트에 저장된 값은~" + redirectAttributes.getAttribute("resultMessage"));
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			throw new CustomException("uploaded file is parsing NullPointer Error");
@@ -370,10 +370,8 @@ public class APIController {
 			e.printStackTrace();
 			throw new CustomException("fileUpload is failure!!");
 		}
-		
-		// TODO getMyList로 리다이렉트처리
-		// TODO 업로드 성곻했으면, 메시지하나 뿌려주기.
-		return result;
+		mav.setViewName("redirect:/getMyAccountList.do?year="+year+"&month="+month);
+		return mav;
 		
 	}
 }
