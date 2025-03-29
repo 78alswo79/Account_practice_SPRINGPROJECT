@@ -38,8 +38,21 @@ public class ExcellService {
 		List<Test> resList = new ArrayList<>();
 		// 파일을 서버에 저장
 		File destinationFile = new File(UPLOAD_DIR + file.getOriginalFilename());
-		destinationFile.getParentFile().mkdirs();
-			file.transferTo(destinationFile);
+		
+		// 디렉토리 존재 여부 확인 및 생성
+	    if (!destinationFile.getParentFile().exists()) {
+	        destinationFile.getParentFile().mkdirs();
+	    }
+	    
+	    // 파일이 이미 존재하는지 확인
+	    if (destinationFile.exists()) {
+	        redirectAttributes.addFlashAttribute("resultMessage", "파일이 이미 존재합니다. 다시 확인 해주세요.");
+	        return;
+	    } else {
+	        // 파일을 서버에 저장
+	        file.transferTo(destinationFile);
+	    }
+			
 			
 		// FileInputStream과 Workbook 객체는 사용 후 반드시 닫아야 합니다. try-with-resources 구문을 사용하면 자동으로 닫습니다.
 		Workbook workbook = null;
