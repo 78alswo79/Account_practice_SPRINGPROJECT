@@ -48,7 +48,7 @@
 	</insert>
 	
 	<select id = "getSeq" parameterType = "com.example.demo.dto.Test" resultType = "Integer">
-		SELECT
+		SELECT /* TestMapper.getSeq */
 			MAX(SEQ)
 		FROM
 			MASTER_ACCOUNT
@@ -163,5 +163,14 @@
 		<!-- LIMIT 
 			#{pageVO.startIndex}, #{pageVO.endIndex} -->
 	</select>
+	
+	<insert id="insertExcelList">
+		INSERT INTO MASTER_ACCOUNT (SEQ, YEAR, MONTH, DAYS, CONTENT, INCOME, SPENDING, BALANCE) 
+		VALUES
+		<!-- mybatis forEach문 공부. -->
+		<foreach item="item" collection="list" separator=",">
+            (#{item.seq}, #{item.year}, #{item.month}, #{item.days}, #{item.content}, #{item.income}, #{item.spending}, #{item.balance})
+        </foreach>
+	</insert>
 	
 </mapper>

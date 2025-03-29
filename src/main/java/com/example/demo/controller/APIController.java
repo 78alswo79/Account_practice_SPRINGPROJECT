@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,11 +21,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dto.PageVO;
 import com.example.demo.dto.Test;
 import com.example.demo.service.AccountService;
+import com.example.demo.service.ExcellService;
 import com.example.demo.util.CookieUtil;
 import com.example.demo.util.CustomException;
 import com.example.demo.util.JwtUtilClass;
@@ -45,6 +49,9 @@ public class APIController {
 	JwtUtilClass jwtUtil;
 	@Autowired
 	CookieUtil cookieUtil;
+	@Autowired
+	ExcellService excellService;
+	
 	// 임시. 사용자 데이터
 	// map 선언과 동시에 초기화. 공부하기 좋은.
 	private Map<String, Object> userTest = new HashMap<>() {{
@@ -170,7 +177,7 @@ public class APIController {
 				// 적절한 예외 처리
 				throw new CustomException("Entity, Test, or AccountService cannot be null");
 			}	
-			int getSeq = accoutService.getSeq(entity);
+			int getSeq = accoutService.getSeq();
 			entity.setSeq(getSeq);
 			
 			List<Test> getList = accoutService.getTestList(entity);
@@ -333,7 +340,7 @@ public class APIController {
 				
 				System.out.println("다운 받을 액셀 리스트는??" + getList);
 				// 다운로드 액셀 구성
-				outputStream = accoutService.exportToExcel(getList);
+				outputStream = excellService.exportToExcel(getList);
 				bytes = outputStream.toByteArray(); 				// 바이트 배열 가져오기
 				headers.add("Content-Disposition", "attachment; filename=test.xlsx");
 			}
@@ -347,6 +354,24 @@ public class APIController {
 		return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
 	}
 	
-	//TODO 액셀 업로드 구현. 시험적으로. 내용 구상은 아직해놓지 않았다.
-	//TODO JWT토큰 사용자 인증 컨트롤러 만들기.
+	@PostMapping("/uploadExcelFile")
+	public ModelAndView uploadExcelFile(MultipartFile file, RedirectAttributes redirectAttributes
+				, @RequestParam String year
+				, @RequestParam String month
+				, HttpServletResponse response) throws IOException {
+		ModelAndView mav = new ModelAndView();
+		try {
+			
+			excellService.saveFile(file, redirectAttributes);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			throw new CustomException("uploaded file is parsing NullPointer Error");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CustomException("fileUpload is failure!!");
+		}
+		mav.setViewName("redirect:/getMyAccountList.do?year="+year+"&month="+month);
+		return mav;
+		
+	}
 }

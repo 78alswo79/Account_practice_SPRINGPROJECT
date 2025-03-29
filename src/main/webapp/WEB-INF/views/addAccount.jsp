@@ -41,6 +41,7 @@
 <body>
 
 	<h2>재무 현황</h2>
+	<!-- 데이터 입력을 위한 폼 -->
 		<form id="accountForm" action="/api/insertAccout.do" method="post">
 		    <button type="submit" id="submit"		class="button" >입력</button>
 		    <button type="button" id="addButton" 	class="button">추가하기</button>
@@ -70,83 +71,83 @@
 	const gubun = '<c:out value='${gubun}'/>';
     
     document.addEventListener('DOMContentLoaded', e => {
-	   	// 가계부 입력용 스크립트
-	   	const addButton = document.getElementById('addButton');
-	   	const accountForm = document.getElementById('accountForm');
-	   	const submitBtn = document.getElementById('submit');
-	   	const inputDays = document.getElementsByName('days');
-	   	
-	   	// javascript input추가하는 방법 깔끔하게,  공부하기 좋은.
-	   	addButton.addEventListener('click', e => {
-	   		const formRow = document.getElementsByClassName('form-row');
-	   		const newDiv = document.createElement('div');
-	   		newDiv.className = 'form-row';
-	   		
-	   		const divCnt = formRow.length + 1;
-	   		
-	   		const fields = [
-	   			{label : '년도', 		type : 'text', 	name : 'year'}
-	   			, {label : '월', 	type : 'text', 	name : 'month'}
-	   			, {label : '일', 	type : 'text', 	name : 'days'}
-	   			, {label : '내용', 	type : 'text', 	name : 'content'}
-	   			, {label : '수입', 	type : 'text', 	name : 'income',	value : '0'}
-	   			, {label : '지출', 	type : 'text', 	name : 'spending',	value : '0'}
-	   			, {label : '잔액', 	type : 'text', 	name : 'balance',	value : '0'}
-	   		];
-	   		
-	   		fields.forEach((field) => {		
-	   			const label = document.createElement('label');
-	   			label.setAttribute('for', field.name + divCnt);
-	   			label.innerHTML = field.label + ':';
-	   			
-	   			const input = document.createElement('input');
-	   			input.setAttribute('type', field.type);
-	   			input.setAttribute('id', field.name + divCnt);
-	   			input.setAttribute('name', field.name);
-	   			
-	   			if (field.name === 'year') {
-	   				input.setAttribute('value', modelYear);
-	   				input.setAttribute('readonly', true);
-	   			} else if (field.name === 'month') {
-	   				input.setAttribute('value', modelMonth);
-	   				input.setAttribute('readonly', true);
-	   			}
-	   			
-	   			input.setAttribute('required', true);
-	   			
-	   			if (field.name === 'days') {
-	   				addEventDays(input);		
-	   			}
-	   			
-	   			// '수입' 자동 계산입력 스크립트
-	   			if (field.name === 'income') {
-	   				input.setAttribute('value', field.value);
-	   				autoCalculate(field.name, input);
-	   			}
-	   			
-	   			// '지출' 자동 계산입력
-	   			if (field.name === 'spending') {
-	   				input.setAttribute('value', field.value);
-	   				autoCalculate(field.name, input);
-	   			}
-	   			
-	   			if (field.name === 'balance') {
-	   				input.setAttribute('value', field.value);
-	   			}
-	   			newDiv.appendChild(label);
-	   			newDiv.appendChild(input);
-	   			
-	   		});
-	   		
-	   		accountForm.appendChild(newDiv);
-	   	});
-	   	
-	   	// 폼 제출
-	   	accountForm.addEventListener('submit', e => {
-	   		e.preventDefault();
-	   		
-	   		// checkValidity()는 HTML의 required를 만족했는지 비교하는 메소드다.
-	   		if (accountForm.checkValidity()) {
+    	// 가계부 입력용 스크립트
+    	const addButton = document.getElementById('addButton');
+    	const accountForm = document.getElementById('accountForm');
+    	const submitBtn = document.getElementById('submit');
+    	const inputDays = document.getElementsByName('days');
+    	
+    	// javascript input추가하는 방법 깔끔하게,  공부하기 좋은.
+    	addButton.addEventListener('click', e => {
+    		const formRow = document.getElementsByClassName('form-row');
+    		const newDiv = document.createElement('div');
+    		newDiv.className = 'form-row';
+    		
+    		const divCnt = formRow.length + 1;
+    		
+    		const fields = [
+    			{label : '년도', 		type : 'text', 	name : 'year'}
+    			, {label : '월', 	type : 'text', 	name : 'month'}
+    			, {label : '일', 	type : 'text', 	name : 'days'}
+    			, {label : '내용', 	type : 'text', 	name : 'content'}
+    			, {label : '수입', 	type : 'text', 	name : 'income',	value : '0'}
+    			, {label : '지출', 	type : 'text', 	name : 'spending',	value : '0'}
+    			, {label : '잔액', 	type : 'text', 	name : 'balance',	value : '0'}
+    		];
+    		
+    		fields.forEach((field) => {		
+    			const label = document.createElement('label');
+    			label.setAttribute('for', field.name + divCnt);
+    			label.innerHTML = field.label + ':';
+    			
+    			const input = document.createElement('input');
+    			input.setAttribute('type', field.type);
+    			input.setAttribute('id', field.name + divCnt);
+    			input.setAttribute('name', field.name);
+    			
+    			if (field.name === 'year') {
+    				input.setAttribute('value', modelYear);
+    				input.setAttribute('readonly', true);
+    			} else if (field.name === 'month') {
+    				input.setAttribute('value', modelMonth);
+    				input.setAttribute('readonly', true);
+    			}
+    			
+    			input.setAttribute('required', true);
+    			
+    			if (field.name === 'days') {
+    				addEventDays(input);		
+    			}
+    			
+    			// '수입' 자동 계산입력 스크립트
+    			if (field.name === 'income') {
+    				input.setAttribute('value', field.value);
+    				autoCalculate(field.name, input);
+    			}
+    			
+    			// '지출' 자동 계산입력
+    			if (field.name === 'spending') {
+    				input.setAttribute('value', field.value);
+    				autoCalculate(field.name, input);
+    			}
+    			
+    			if (field.name === 'balance') {
+    				input.setAttribute('value', field.value);
+    			}
+    			newDiv.appendChild(label);
+    			newDiv.appendChild(input);
+    			
+    		});
+    		
+    		accountForm.appendChild(newDiv);
+    	});
+    	
+    	// 폼 제출
+    	accountForm.addEventListener('submit', e => {
+    		e.preventDefault();
+    		
+    		// checkValidity()는 HTML의 required를 만족했는지 비교하는 메소드다.
+    		if (accountForm.checkValidity()) {
 	   			// FormData 객체 생성
 	            const formData = new FormData(e.target)
 	   	        // FormData를 일반 객체로 변환
@@ -196,14 +197,13 @@
 				  }).catch(error => {
 					  alert('There was a problem with the fetch operation: '+error);
 				  });
-	    			  
-	   	        // form.submit 방식
-	   			// accountForm.submit();
-	   		} else {
-	   			alert('입력을 완료하셔야 합니다');
-	   		}
-	   	});
-	   	addEventDays(document.getElementById('days'));
+    	        // form.submit 방식
+    			// accountForm.submit();
+    		} else {
+    			alert('입력을 완료하셔야 합니다');
+    		}
+    	});
+    	addEventDays(document.getElementById('days'));
     });
     
     

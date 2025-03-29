@@ -175,7 +175,6 @@ public class BaseController {
 			mav.addObject("year", year);
 			mav.addObject("month", month);
 		}
-
 		return mav;
 	}
 }
