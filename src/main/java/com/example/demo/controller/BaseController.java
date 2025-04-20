@@ -97,10 +97,10 @@ public class BaseController {
 //		}
 		
 		String token = cookieUtil.getJwtFromCookie(req);
-		if (token.isBlank()) {
-			mav.setViewName("redirect:/login/loginForm.do");
-			return mav;
-		}
+//		if (token.isBlank()) {
+//			mav.setViewName("redirect:/login/loginForm.do");
+//			return mav;
+//		}
 		// Jwt 토큰으로 유효성음 검증.
 		Claims claims = jwtUtil.validateToken(token);
 		if (!claims.isEmpty()) {
@@ -164,10 +164,10 @@ public class BaseController {
 		
 		// Jwt유횽성 검증로직.
 		String token = cookieUtil.getJwtFromCookie(req);
-		if (token.isBlank()) {
-			mav.setViewName("redirect:/login/loginForm.do");
-			return mav;
-		}
+//		if (token.isBlank()) {
+//			mav.setViewName("redirect:/login/loginForm.do");
+//			return mav;
+//		}
 		// Jwt 토큰으로 유효성음 검증.
 		Claims claims = jwtUtil.validateToken(token);
 		if (!claims.isEmpty()) {

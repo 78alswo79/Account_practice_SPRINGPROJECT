@@ -112,10 +112,10 @@ public class APIController {
 		ModelAndView mav = new ModelAndView();
 		
 		String token = cookieUtil.getJwtFromCookie(req);
-		if (token.isBlank()) { //token.isBlank()  currentPage == 0
-			map.put("responseUrl", "/login/loginForm.do");
-			ResponseEntity.ok(map);
-		}
+//		if (token.isBlank()) { //token.isBlank()  currentPage == 0
+//			map.put("responseUrl", "/login/loginForm.do");
+//			ResponseEntity.ok(map);
+//		}
 		// Jwt 토큰으로 유효성음 검증.
 		Claims claims = jwtUtil.validateToken(token);
 		if (!claims.isEmpty()) {
@@ -165,10 +165,10 @@ public class APIController {
 		// 응답을 JSON 형태로 반환
         Map<String, Object> response = new HashMap<>();
         String token = cookieUtil.getJwtFromCookie(req);
-		if (token.isBlank()) { //token.isBlank()  currentPage == 0
-			response.put("responseUrl", "/login/loginForm.do");
-			return ResponseEntity.ok(response);
-		}
+//		if (token.isBlank()) { //token.isBlank()  currentPage == 0
+//			response.put("responseUrl", "/login/loginForm.do");
+//			return ResponseEntity.ok(response);
+//		}
 		// Jwt 토큰으로 유효성음 검증.
 		Claims claims = jwtUtil.validateToken(token);
 		if (!claims.isEmpty()) {
@@ -205,10 +205,10 @@ public class APIController {
 		Map<String, Object> response = new HashMap<String, Object>();
 		
 		String token = cookieUtil.getJwtFromCookie(req);
-		if (token.isBlank()) { //token.isBlank()  currentPage == 0
-			response.put("responseUrl", "/login/loginForm.do");
-			return ResponseEntity.ok(response);
-		}
+//		if (token.isBlank()) { //token.isBlank()  currentPage == 0
+//			response.put("responseUrl", "/login/loginForm.do");
+//			return ResponseEntity.ok(response);
+//		}
 		// Jwt 토큰으로 유효성음 검증.
 		Claims claims = jwtUtil.validateToken(token);
 		if (!claims.isEmpty()) {
@@ -277,10 +277,10 @@ public class APIController {
 		Map<String, Object> response = new HashMap<String, Object>();
 		
 		String token = cookieUtil.getJwtFromCookie(req);
-		if (token.isBlank()) { //token.isBlank()  currentPage == 0
-			response.put("responseUrl", "/login/loginForm.do");
-			return ResponseEntity.ok(response);
-		}
+//		if (token.isBlank()) { //token.isBlank()  currentPage == 0
+//			response.put("responseUrl", "/login/loginForm.do");
+//			return ResponseEntity.ok(response);
+//		}
 		// Jwt 토큰으로 유효성음 검증.
 		Claims claims = jwtUtil.validateToken(token);
 		if (!claims.isEmpty()) {
@@ -320,12 +320,12 @@ public class APIController {
 			//response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 			//response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
 			String token = cookieUtil.getJwtFromCookie(req);
-			if (token.isBlank()) { //token.isBlank()  currentPage == 0
-				Map<String, String> responseMap = new HashMap<>();
-				responseMap.put("responseUrl", "/login/loginForm.do");
-				res.sendRedirect("/login/loginForm.do");
-				return null;
-			}
+//			if (token.isBlank()) { //token.isBlank()  currentPage == 0
+//				Map<String, String> responseMap = new HashMap<>();
+//				responseMap.put("responseUrl", "/login/loginForm.do");
+//				res.sendRedirect("/login/loginForm.do");
+//				return null;
+//			}
 			// Jwt 토큰으로 유효성음 검증.
 			Claims claims = jwtUtil.validateToken(token);
 			if (!claims.isEmpty()) {
@@ -335,7 +335,7 @@ public class APIController {
 				}
 				
 				test.setYear(year);
-				test.setMonth(month);
+				test.setMonth(accoutService.setParseMonth(month));
 				List<Test> getList = accoutService.getFilteredList(test, "");
 				
 				System.out.println("다운 받을 액셀 리스트는??" + getList);
