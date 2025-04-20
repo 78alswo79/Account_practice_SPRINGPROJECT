@@ -149,7 +149,7 @@ public class AccountService {
 		return resSeq;
 	}
 	
-	private String setParseMonth(String month) {
+	public String setParseMonth(String month) {
 		String reStr = "";
 		if (Integer.parseInt(month) < 10) {
 			reStr = "0" + month;
@@ -234,8 +234,13 @@ public class AccountService {
 	 * @return void
 	 * */
 	public void handleRedirect(HttpServletRequest request, HttpServletResponse resP) throws IOException {
-		HttpSession session = request.getSession();	
-		resP.sendRedirect(session.getAttribute("redirectUrl") +"?"+ session.getAttribute("param"));
+		HttpSession session = request.getSession();
+		if (session.getAttribute("redirectUrl") != null) {			
+			resP.sendRedirect(session.getAttribute("redirectUrl") +"?"+ session.getAttribute("param"));
+		} else {
+			resP.sendRedirect("/index.do");
+		}
+		
 	}
 	
 }
