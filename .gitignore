@@ -35,6 +35,3 @@ build/
 
 ### dtd ###
 src/main/resources/dtd/*
-
-### src/test/*###
-src/test/*
