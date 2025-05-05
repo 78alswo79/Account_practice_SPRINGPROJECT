@@ -19,12 +19,6 @@ public class BaseControllerTestClass {
 	@Mock
 	private AccountService accountService;
 	
-//	@InjectMocks
-//    private BaseControllerTestClass baseControllerTestClass;
-
-//	public BaseControllerTestClass(AccountService accoutService) {
-//		this.accoutService = accoutService;
-//	}
 	@BeforeEach
     public void setUp() {
 		MockitoAnnotations.openMocks(this);
